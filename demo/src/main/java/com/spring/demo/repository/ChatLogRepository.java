@@ -10,4 +10,6 @@ import java.util.List;
 public interface ChatLogRepository extends JpaRepository<ChatLog, Integer> {
 
     List<ChatLog> findByRoomNum(Integer roomNum);
+
+    List<ChatLog> findByRoomNumOrderByLogChattingTime(Integer roomNum);
 }

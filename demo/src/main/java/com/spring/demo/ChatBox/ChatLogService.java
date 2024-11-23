@@ -21,7 +21,11 @@ public class ChatLogService {
     private ChatRoomRepository chatRoomRepository;
 
     public List<ChatLog> getChatLogsByRoom(Integer roomNum){
-        return chatLogRepository.findByRoomNum(roomNum);
+        List<ChatLog> chatLogList = chatLogRepository.findByRoomNumOrderByLogChattingTime(roomNum);
+        for(ChatLog chatLog : chatLogList){
+            System.out.println(chatLog.getLogText());
+        }
+        return chatLogList;
     }
 
     @Transactional
