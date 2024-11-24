@@ -2,7 +2,8 @@ package com.spring.demo.security.controller;
 
 import com.spring.demo.security.dto.AuthRequest;
 import com.spring.demo.security.dto.AuthResponse;
-import com.spring.demo.security.dto.RegisterRequest;
+import com.spring.demo.security.dto.RegisterHostRequest;
+import com.spring.demo.security.dto.RegisterUserRequest;
 import com.spring.demo.security.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,10 +21,16 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
-        authService.register(request);
+    @PostMapping("/register/user")
+    public ResponseEntity<String> registerUser(@RequestBody RegisterUserRequest request) {
+        authService.registerUser(request);
         return ResponseEntity.ok("User registered successfully!");
+    }
+
+    @PostMapping("/register/host")
+    public ResponseEntity<String> registerHost(@RequestBody RegisterHostRequest request) {
+        authService.registerHost(request);
+        return ResponseEntity.ok("Host registered successfully!");
     }
 
     @PostMapping("/login")

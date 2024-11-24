@@ -23,11 +23,11 @@ public class UserEntity {
     @Column(name = "User_pwd", nullable = false)
     private String password;
 
-    @Column(name = "User_email")
+    @Column(name = "User_email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "User_rights")
-    private String role;
+    @Column(name = "User_rights", nullable = false)
+    private String role; // 호스트와 일반 회원 구분
 
     @Column(name = "User_name")
     private String name;
@@ -38,4 +38,3 @@ public class UserEntity {
     @Column(name = "User_phone")
     private String phone;
 }
-
