@@ -20,6 +20,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     implementation 'org.json:json:20210307'
 
     implementation group: 'org.webjars', name: 'sockjs-client', version: '1.0.2'
