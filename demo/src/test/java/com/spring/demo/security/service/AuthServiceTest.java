@@ -5,8 +5,6 @@ import com.spring.demo.security.dto.AuthResponse;
 import com.spring.demo.security.dto.RegisterHostRequest;
 import com.spring.demo.security.dto.RegisterUserRequest;
 import com.spring.demo.security.model.HostEntity;
-import com.spring.demo.security.model.HostInfoEntity;
-import com.spring.demo.security.model.UserEntity;
 import com.spring.demo.security.repository.HostInfoRepository;
 import com.spring.demo.security.repository.HostRepository;
 import com.spring.demo.security.repository.UserRepository;

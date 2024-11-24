@@ -4,23 +4,22 @@ import com.spring.demo.security.dto.AuthRequest;
 import com.spring.demo.security.dto.AuthResponse;
 import com.spring.demo.security.dto.RegisterHostRequest;
 import com.spring.demo.security.dto.RegisterUserRequest;
-import com.spring.demo.security.model.HostEntity;
-import com.spring.demo.security.model.HostInfoEntity;
-import com.spring.demo.security.model.Role;
-import com.spring.demo.security.model.UserEntity;
+import com.spring.demo.security.model.HostInfo;
+import com.spring.demo.security.model.Hosts;
+import com.spring.demo.security.model.Users;
 import com.spring.demo.security.repository.HostInfoRepository;
 import com.spring.demo.security.repository.HostRepository;
 import com.spring.demo.security.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 @Service
 public class AuthService {
@@ -36,85 +35,38 @@ public class AuthService {
     public AuthService(UserRepository userRepository,
                        HostRepository hostRepository,
                        HostInfoRepository hostInfoRepository,
-                       PasswordEncoder passwordEncoder,
+                       @Qualifier("passwordEncoder") PasswordEncoder passwordEncoder,
                        JwtService jwtService,
                        AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.hostRepository = hostRepository;
         this.hostInfoRepository = hostInfoRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = passwordEncoder; // 초기화
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
     }
 
     public void registerUser(RegisterUserRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
-            // 이메일이 이미 사용 중임을 처리하는 로직 (예: 로그 기록)
-            System.out.println("Email is already in use");
-            return;
-        }
+        if (isEmailOrUserIdExists(request.getEmail(), request.getUserId())) return;
 
-        if (userRepository.existsByUserId(request.getUserId())) {
-            // 사용자 ID가 이미 사용 중임을 처리하는 로직 (예: 로그 기록)
-            System.out.println("User ID is already in use");
-            return;
-        }
-
-        UserEntity user = new UserEntity();
-        user.setUserId(request.getUserId());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setEmail(request.getEmail());
-        user.setName(request.getName());
-        user.setNickName(request.getNickName());
-        user.setPhone(request.getPhone());
-        user.setUserRights("USER");
-
+        Users user = createUserFromRegisterUserRequest(request, "USER");
         userRepository.save(user);
     }
 
     public void registerHost(RegisterHostRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
-            // 이메일이 이미 사용 중임을 처리하는 로직 (예: 로그 기록)
-            System.out.println("Email is already in use");
-            return;
-        }
-
-        if (userRepository.existsByUserId(request.getUserId())) {
-            // 사용자 ID가 이미 사용 중임을 처리하는 로직 (예: 로그 기록)
-            System.out.println("User ID is already in use");
-            return;
-        }
+        if (isEmailOrUserIdExists(request.getEmail(), request.getUserId())) return;
 
         // 사용자 정보 저장
-        UserEntity user = new UserEntity();
-        user.setUserId(request.getUserId());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setEmail(request.getEmail());
-        user.setName(request.getName());
-        user.setNickName(request.getNickName());
-        user.setPhone(request.getPhone());
-        user.setUserRights("HOST");
+        Users user = createUserFromRegisterHostRequest(request, "HOST");
         userRepository.save(user);
 
         // 호스트 정보 저장
-        HostEntity host = new HostEntity();
-        host.setUser(user);
+        Hosts host = new Hosts();
+        host.setUserNum(user.getUserNum());
         hostRepository.save(host);
 
         // 호스트 상세 정보 저장
-        HostInfoEntity hostInfo = new HostInfoEntity();
-        hostInfo.setHost(host);
-        hostInfo.setBusinessAddress(request.getBusinessAddress());
-        hostInfo.setBusinessItem(request.getBusinessItem());
-        hostInfo.setRegistrationNumber(request.getRegistrationNumber());
-        hostInfo.setBusinessType(request.getBusinessType());
-        hostInfo.setCompanyName(request.getCompanyName());
-        hostInfo.setCorporateName(request.getCorporateName());
-        hostInfo.setCorporateNumber(request.getCorporateNumber());
-        hostInfo.setOpenDate(request.getOpenDate());
-        hostInfo.setTaxType(request.getTaxType());
-        hostInfo.setRegistDate(LocalDateTime.now());
-
+        HostInfo hostInfo = createHostInfoFromRequest(request, host);
         hostInfoRepository.save(hostInfo);
     }
 
@@ -126,14 +78,68 @@ public class AuthService {
                 )
         );
 
-        UserEntity user = userRepository.findByEmail(request.getEmail())
+        Users user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        // 이메일을 통해 토큰 생성
-        String token = jwtService.generateToken(user.getEmail());
-
-        // 수정된 생성자 사용
+        String token = jwtService.generateToken(user.getUserEmail());
         return new AuthResponse(token, user.getUserRights());
     }
 
+    // 중복 제거를 위한 유틸리티 메서드
+
+    private boolean isEmailOrUserIdExists(String email, String userId) {
+        if (userRepository.existsByEmail(email)) {
+            System.out.println("Email is already in use");
+            return true;
+        }
+
+        if (userRepository.existsByUserId(userId)) {
+            System.out.println("User ID is already in use");
+            return true;
+        }
+
+        return false;
+    }
+
+    private Users createUserFromRegisterUserRequest(RegisterUserRequest request, String userRights) {
+        Users user = new Users();
+        user.setUserId(Integer.parseInt(request.getUserId()));
+        user.setUserPwd(passwordEncoder.encode(request.getPassword()));
+        user.setUserEmail(request.getEmail());
+        user.setUserName(request.getName());
+        user.setUserNickname(request.getNickName());
+        user.setUserPhone(request.getPhone());
+        user.setUserRights(userRights);
+        return user;
+    }
+
+    private Users createUserFromRegisterHostRequest(RegisterHostRequest request, String userRights) {
+        Users user = new Users();
+        user.setUserId(Integer.parseInt(request.getUserId()));
+        user.setUserPwd(passwordEncoder.encode(request.getPassword()));
+        user.setUserEmail(request.getEmail());
+        user.setUserName(request.getName());
+        user.setUserNickname(request.getNickName());
+        user.setUserPhone(request.getPhone());
+        user.setUserRights(userRights);
+        return user;
+    }
+
+    private HostInfo createHostInfoFromRequest(RegisterHostRequest request, Hosts host) {
+        HostInfo hostInfo = new HostInfo();
+        hostInfo.setHostNum(host.getHostNum());
+        hostInfo.setHostBisAddress(request.getBusinessAddress());
+        hostInfo.setHostBisItem(request.getBusinessItem());
+        hostInfo.setHostRegistNum(request.getRegistrationNumber());
+        hostInfo.setHostBisType(request.getBusinessType());
+        hostInfo.setHostCompanyName(request.getCompanyName());
+        hostInfo.setHostCorpName(request.getCorporateName());
+        hostInfo.setHostCorpsocialNum(request.getCorporateNumber());
+        hostInfo.setHostOpenDate(
+                Date.from(request.getOpenDate().atZone(ZoneId.systemDefault()).toInstant())
+        );
+        hostInfo.setHostTaxType(request.getTaxType());
+        hostInfo.setHostRegistDate(new Date());
+        return hostInfo;
+    }
 }

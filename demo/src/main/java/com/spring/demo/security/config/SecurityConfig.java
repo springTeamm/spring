@@ -1,7 +1,6 @@
 package com.spring.demo.security.config;
 
 import com.spring.demo.security.repository.UserRepository;
-import com.spring.demo.security.service.AuthService;
 import com.spring.demo.security.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +13,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -49,7 +47,7 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @Bean
+    @Bean(name = "passwordEncoderConfig")
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
