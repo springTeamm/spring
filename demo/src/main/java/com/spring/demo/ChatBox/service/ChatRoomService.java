@@ -1,4 +1,4 @@
-package com.spring.demo.ChatBox;
+package com.spring.demo.ChatBox.service;
 
 import com.spring.demo.entity.ChatRoom;
 import com.spring.demo.repository.ChatRoomRepository;
