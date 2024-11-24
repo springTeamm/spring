@@ -1,10 +1,9 @@
-package com.spring.demo.entity;
+package com.spring.demo.ChatBox.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "chat_log")

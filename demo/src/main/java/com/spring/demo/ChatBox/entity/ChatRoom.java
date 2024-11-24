@@ -1,9 +1,8 @@
-package com.spring.demo.entity;
+package com.spring.demo.ChatBox.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity

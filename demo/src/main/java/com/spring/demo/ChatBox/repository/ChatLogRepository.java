@@ -1,6 +1,6 @@
-package com.spring.demo.repository;
+package com.spring.demo.ChatBox.repository;
 
-import com.spring.demo.entity.ChatLog;
+import com.spring.demo.ChatBox.entity.ChatLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
 package com.spring.demo.ChatBox.service;
 
-import com.spring.demo.entity.ChatRoom;
-import com.spring.demo.repository.ChatRoomRepository;
+import com.spring.demo.ChatBox.entity.ChatRoom;
+import com.spring.demo.ChatBox.repository.ChatRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

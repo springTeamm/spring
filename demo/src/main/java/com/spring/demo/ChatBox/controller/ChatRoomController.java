@@ -1,7 +1,7 @@
 package com.spring.demo.ChatBox.controller;
 
 import com.spring.demo.ChatBox.service.ChatRoomService;
-import com.spring.demo.entity.ChatRoom;
+import com.spring.demo.ChatBox.entity.ChatRoom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
