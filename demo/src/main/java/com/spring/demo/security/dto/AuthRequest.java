@@ -1,14 +1,9 @@
 package com.spring.demo.security.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class AuthRequest {
-
     private String email;
     private String password;
 }

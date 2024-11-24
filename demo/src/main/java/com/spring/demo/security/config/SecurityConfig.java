@@ -1,46 +1,55 @@
 package com.spring.demo.security.config;
 
 import com.spring.demo.security.repository.UserRepository;
+import com.spring.demo.security.service.AuthService;
 import com.spring.demo.security.service.JwtService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final UserRepository userRepository;
     private final JwtService jwtService;
-
-    public SecurityConfig(UserRepository userRepository, JwtService jwtService) {
-        this.userRepository = userRepository;
-        this.jwtService = jwtService;
-    }
+    private final UserRepository userRepository;
+    private final AuthService.CustomUserDetailsService userDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
+        http
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // 회원가입 및 로그인 엔드포인트 허용
-                        .anyRequest().authenticated() // 나머지는 인증 필요
+                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/register/user").permitAll()
+                        .requestMatchers("/api/auth/register/host").permitAll()
+                        .requestMatchers("/api/host/**").hasRole("HOST")
+                        .requestMatchers("/api/user/**").hasRole("USER")
+                        .anyRequest().authenticated()
                 )
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtService))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtService, userRepository));
+                .addFilterBefore(new JwtAuthorizationFilter(jwtService, userRepository),
+                        UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationManagerBuilder authBuilder) throws Exception {
-        authBuilder.userDetailsService(email -> userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email))
-        ).passwordEncoder(passwordEncoder());
-        return authBuilder.build();
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean

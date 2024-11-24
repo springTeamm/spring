@@ -5,6 +5,7 @@ import com.spring.demo.security.dto.AuthResponse;
 import com.spring.demo.security.dto.RegisterHostRequest;
 import com.spring.demo.security.dto.RegisterUserRequest;
 import com.spring.demo.security.service.AuthService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,29 +14,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
 
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
-
     @PostMapping("/register/user")
-    public ResponseEntity<String> registerUser(@RequestBody RegisterUserRequest request) {
+    public ResponseEntity<?> registerUser(@RequestBody RegisterUserRequest request) {
         authService.registerUser(request);
-        return ResponseEntity.ok("User registered successfully!");
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/register/host")
-    public ResponseEntity<String> registerHost(@RequestBody RegisterHostRequest request) {
+    public ResponseEntity<?> registerHost(@RequestBody RegisterHostRequest request) {
         authService.registerHost(request);
-        return ResponseEntity.ok("Host registered successfully!");
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-        AuthResponse response = authService.login(request);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(authService.login(request));
     }
 }
