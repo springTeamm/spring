@@ -40,4 +40,7 @@ public class RegisterHostRequest {
     private LocalDateTime openDate;
     @NotBlank
     private String taxType;
+
+    // 호스트 상세 정보
+    private LocalDateTime registDate;
 }
