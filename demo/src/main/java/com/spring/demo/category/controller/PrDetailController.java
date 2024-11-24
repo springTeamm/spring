@@ -24,7 +24,31 @@ public class PrDetailController {
         return prDetailService.savePrDetail(prDetail);
     }
 
-    // 연습실 정보 조회
+    // location_name이 존재하는 데이터만 필터링 조회
+    @GetMapping("/with-location")
+    public List<PrDetail> getPrDetailsWithLocation() {
+        return prDetailService.getPrDetailsWithLocation();
+    }
+
+    // 특정 연습실 조회
+    @GetMapping("/{id}")
+    public PrDetail getPrDetailById(@PathVariable Integer id) {
+        return prDetailService.getPrDetailById(id);
+    }
+
+    @GetMapping("/host-rooms/{hostNum}")
+    public List<Integer> getPrNumsByHost(@PathVariable Integer hostNum) {
+        return prDetailService.getPrNumsByHostNum(hostNum);
+    }
+
+    @GetMapping("/host-rooms-unique/{hostNum}")
+    public List<PrDetail> getUniqueLocationPrDetailsByHost(
+            @PathVariable Integer hostNum,
+            @RequestParam String locationName) {
+        return prDetailService.getUniqueLocationPrDetailsByHost(hostNum, locationName);
+    }
+
+    // 연습실 정보 필터링 조회
     @GetMapping
     public List<PrDetail> getFilteredPrDetails(
             @RequestParam(required = false) Integer minPrice,
@@ -35,10 +59,9 @@ public class PrDetailController {
         return prDetailService.getFilteredPrDetails(minPrice, maxPrice, category, region, spaceType);
     }
 
-    // 특정 연습실 조회
-    @GetMapping("/{id}")
-    public PrDetail getPrDetailById(@PathVariable Integer id) {
-        return prDetailService.getPrDetailById(id);
+    // 연습실 수정
+    @PutMapping("/{id}")
+    public PrDetail updatePrDetail(@PathVariable Integer id, @RequestBody PrDetail updatedPrDetail) {
+        return prDetailService.updatePrDetail(id, updatedPrDetail);
     }
-
 }

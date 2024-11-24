@@ -17,4 +17,5 @@ public interface PracticeRoomRepository extends JpaRepository<PracticeRoom, Inte
 
     // 키워드와 카테고리 조합 검색
     List<PracticeRoom> findByPrNameContainingAndCategoryNum(String keyword, Integer categoryNum);
+
 }

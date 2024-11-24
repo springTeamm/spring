@@ -9,8 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/booking")
 public class BookingController {
@@ -51,6 +54,24 @@ public class BookingController {
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("오류 발생: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/room/{prNum}")
+    public ResponseEntity<List<String>> getBookedTimes(@PathVariable Integer prNum, @RequestParam String date) {
+        try {
+            // 특정 연습실의 예약된 시간 목록 가져오기
+            List<PrBooking> bookings = prBookingService.getBookingsByRoomAndDate(prNum, date);
+            // 예약된 시간 목록을 String으로 변환 (HH:00 포맷)
+            List<String> bookedTimes = bookings.stream()
+                    .map(booking -> {
+                        SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
+                        return hourFormat.format(booking.getBookingDate()) + ":00";
+                    })
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(bookedTimes);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 }

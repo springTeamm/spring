@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +36,19 @@ public class PrBookingService {
 
         return prBookingRepository.save(booking);
     }
+    // 예약 목록 가져오기
+    public List<PrBooking> getBookingsByRoomAndDate(Integer prNum, String date) {
+        try {
+            // 날짜 형식 변환
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date bookingDate = dateFormat.parse(date);
 
+            // 해당 연습실과 날짜에 대한 예약 목록 반환
+            return prBookingRepository.findByPrNumAndBookingDate(prNum, bookingDate);
+        } catch (Exception e) {
+            throw new RuntimeException("예약 목록을 가져오는 중 오류 발생: " + e.getMessage());
+        }
+    }
     // 예약 수정
     public PrBooking updateBooking(Integer bookingId, PrBooking updatedBooking) {
         PrBooking existingBooking = prBookingRepository.findById(bookingId)
