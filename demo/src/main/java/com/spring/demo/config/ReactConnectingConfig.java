@@ -10,9 +10,9 @@ public class ReactConnectingConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://192.168.123.106:4000") //React서버주소
+                .allowedOrigins("http://localhost:8000") //React서버주소
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowCredentials(true)
-                .exposedHeaders("Authorization", "Access-Control-Expose-Headers");
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 }

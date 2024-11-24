@@ -1,5 +1,6 @@
 package com.spring.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,7 +25,7 @@ public class PrBooking {
     @Column(name = "User_num") //유저 번호
     private Integer userNum;
 
-    @Column(name = "Booking_Date") //예약 날짜
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private Date bookingDate;
 
     @Column(name = "Booking_total_person") // 예약 총인원
@@ -38,6 +39,7 @@ public class PrBooking {
 
     @Column(name = "Booking_payment_method") //결제방법
     private String bookingPaymentMethod;
+
 
     public PrBooking(Integer bookingNum, Integer prNum, Integer userNum, Date bookingDate, Integer bookingTotalPerson, Integer bookingTotalPrice, Integer bookingUsingTime, String bookingPaymentMethod) {
         this.bookingNum = bookingNum;

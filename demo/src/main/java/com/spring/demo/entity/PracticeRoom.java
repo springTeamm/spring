@@ -24,7 +24,8 @@ public class PracticeRoom {
 
     @Column(name = "Pr_useable") //연습실 사용 가능여부
     private String prUseable;
-
+    @Column(name = "Location_name") // 장소 이름
+    private String locationName;
     @Column(name = "Category_num") //카테고리 번호
     private Integer categoryNum;
 

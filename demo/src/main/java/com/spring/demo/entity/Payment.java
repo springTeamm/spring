@@ -27,7 +27,7 @@ public class Payment {
     @Column(name = "Pay_date") //결제 날짜
     private Date payDate;
 
-    @Column(name = "Pay)status") //결제 상태
+    @Column(name = "Pay_status") //결제 상태
     private String payStatus;
 
     public Payment(Integer payNum, Integer bookingNum, Integer payPrice, Date payDate, String payStatus) {
