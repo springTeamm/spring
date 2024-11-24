@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class ListPersonalScore {
+public class  ListPersonalScore {
     @Id
     @GeneratedValue
     @Column(name = "Personal_num") //개인점수번호
