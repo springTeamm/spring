@@ -25,11 +25,11 @@ public class OCRHostService {
     private static final String API_URL = "https://okn4itil0a.apigw.ntruss.com/custom/v1/36203/777f3fe5442448cde79ed04c677bc0f9f985186c220e54d73947b93f66ce5fcc/general";
     private static final String SECRET = "amNwd0p2YXh6Y1R1S1lCbEFkUU5yaHBIdVhnV0dHbUc=";
 
-    private final HostRepository hostRepository;
+    private final OcrHostRepository ocrHostRepository;
 
     @Autowired
-    public OCRHostService(HostRepository hostRepository) {
-        this.hostRepository = hostRepository;
+    public OCRHostService(OcrHostRepository ocrHostRepository) {
+        this.ocrHostRepository = ocrHostRepository;
     }
 //
 //    public OcrResultDto processImage(String filePath) {
@@ -174,6 +174,6 @@ public String processImage(String filePath) {
         hostInfo.setHostOpenDate(resultDto.getHostOpenDate());
         hostInfo.setHostTaxType(resultDto.getHostTaxType());
 
-        hostRepository.save(hostInfo);
+        ocrHostRepository.save(hostInfo);
     }
 }
