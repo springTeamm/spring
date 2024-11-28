@@ -11,5 +11,11 @@
         <module name="demo.main" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="com.spring.demo" target="17" />
+      <module name="demo" target="17" />
+      <module name="demo.main" target="17" />
+      <module name="demo.test" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>
