@@ -17,7 +17,7 @@ public class Users {
     private Integer userNum;
 
     @Column(name="User_id")
-    private Integer userId;
+    private String userId;
 
     @Column(name = "User_pwd")
     private String userPwd;
@@ -37,7 +37,7 @@ public class Users {
     @Column(name = "User_phone")
     private String userPhone;
 
-    public Users(Integer userNum, Integer userId, String userPwd, String userEmail, String userRights, String userName, String userNickname, String userPhone) {
+    public Users(Integer userNum, String userId, String userPwd, String userEmail, String userRights, String userName, String userNickname, String userPhone) {
         this.userNum = userNum;
         this.userId = userId;
         this.userPwd = userPwd;

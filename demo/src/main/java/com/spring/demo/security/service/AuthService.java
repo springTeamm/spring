@@ -78,7 +78,7 @@ public class AuthService {
                 )
         );
 
-        Users user = userRepository.findByEmail(request.getEmail())
+        Users user = userRepository.findByUserEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         String token = jwtService.generateToken(user.getUserEmail());
@@ -88,7 +88,7 @@ public class AuthService {
     // 중복 제거를 위한 유틸리티 메서드
 
     private boolean isEmailOrUserIdExists(String email, String userId) {
-        if (userRepository.existsByEmail(email)) {
+        if (userRepository.existsByUserEmail(email)) {
             System.out.println("Email is already in use");
             return true;
         }
@@ -103,7 +103,7 @@ public class AuthService {
 
     private Users createUserFromRegisterUserRequest(RegisterUserRequest request, String userRights) {
         Users user = new Users();
-        user.setUserId(Integer.parseInt(request.getUserId()));
+        user.setUserId((request.getUserId()));
         user.setUserPwd(passwordEncoder.encode(request.getPassword()));
         user.setUserEmail(request.getEmail());
         user.setUserName(request.getName());
@@ -115,7 +115,7 @@ public class AuthService {
 
     private Users createUserFromRegisterHostRequest(RegisterHostRequest request, String userRights) {
         Users user = new Users();
-        user.setUserId(Integer.parseInt(request.getUserId()));
+        user.setUserId((request.getUserId()));
         user.setUserPwd(passwordEncoder.encode(request.getPassword()));
         user.setUserEmail(request.getEmail());
         user.setUserName(request.getName());
