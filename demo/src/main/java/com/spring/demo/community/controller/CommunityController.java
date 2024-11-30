@@ -1,31 +1,63 @@
 package com.spring.demo.community.controller;
 
-import com.spring.demo.community.service.CommunityCategoryService;
 import com.spring.demo.community.service.CommunityService;
 import com.spring.demo.entity.Community;
-import com.spring.demo.entity.CommunityCategory;
+import com.spring.demo.entity.CommunityPhoto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/community")
+@CrossOrigin(origins = "http://localhost:4000")
 public class CommunityController {
 
     private final CommunityService communityService;
-    private final CommunityCategoryService communityCategoryService;
 
     @Autowired
-    public CommunityController(CommunityService communityService, CommunityCategoryService communityCategoryService) {
+    public CommunityController(CommunityService communityService) {
         this.communityService = communityService;
-        this.communityCategoryService = communityCategoryService;
     }
 
     // 게시글 작성
     @PostMapping
-    public Community createCommunity(@RequestBody Community community) {
-        return communityService.saveCommunity(community);
+    public ResponseEntity<Community> createCommunity(
+            @RequestPart("community") Community community,
+            @RequestPart(value = "images", required = false) List<MultipartFile> images) {
+        Community savedCommunity = communityService.saveCommunityWithImages(community, images);
+        return new ResponseEntity<>(savedCommunity, HttpStatus.CREATED);
+    }
+
+    // 특정 게시글의 이미지 가져오기
+    @GetMapping("/{id}/images")
+    public ResponseEntity<List<Map<String, String>>> getCommunityImages(@PathVariable Integer id) {
+        List<CommunityPhoto> photos = communityService.findPhotosByCommunityId(id);
+
+        if (photos == null || photos.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<Map<String, String>> photoData = photos.stream()
+                .map(photo -> Map.of(
+                        "cJpgPath", "/uploads/" + photo.getCJpgName(), // 상대 경로로 반환
+                        "cJpgOriginName", photo.getCJpgOriginName()
+                ))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(photoData);
+    }
+
+    // 특정 글 조회 (이미지 포함)
+    @GetMapping("/{id}")
+    public ResponseEntity<Community> getCommunityWithImages(@PathVariable Integer id) {
+        Community community = communityService.getCommunityWithImages(id);
+        return ResponseEntity.ok(community);
     }
 
     // 전체 글 보기
@@ -38,23 +70,5 @@ public class CommunityController {
     @GetMapping("/category/{categoryNum}")
     public List<Community> getCommunitiesByCategory(@PathVariable Integer categoryNum) {
         return communityService.getCommunitiesByCategory(categoryNum);
-    }
-
-    // 특정 글 조회
-    @GetMapping("/{id}")
-    public Community getCommunityById(@PathVariable Integer id) {
-        return communityService.getCommunityById(id);
-    }
-
-    // 특정 글 수정
-    @PutMapping("/{id}")
-    public Community updateCommunity(@PathVariable Integer id, @RequestBody Community updatedCommunity) {
-        return communityService.updateCommunity(id, updatedCommunity);
-    }
-
-    // 모든 커뮤니티 카테고리 조회
-    @GetMapping("/categories")
-    public List<CommunityCategory> getAllCategories() {
-        return communityCategoryService.getAllCategories();
     }
 }
