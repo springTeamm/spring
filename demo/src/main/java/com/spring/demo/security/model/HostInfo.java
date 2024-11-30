@@ -18,8 +18,9 @@ public class HostInfo {
     @Column(name = "Host_info_num")
     private Integer hostInfoNum;
 
-    @Column(name = "Host_num")
-    private Integer hostNum;
+    @OneToOne
+    @JoinColumn(name = "host_num")
+    private Hosts host;
 
     @Column(name = "Host_bis_address") //사업장 주소 정보
     private String hostBisAddress;
@@ -59,7 +60,7 @@ public class HostInfo {
 
     public HostInfo(Integer hostInfoNum, Integer hostNum, String hostBisAddress, String hostBisItem, String hostRegistNum, String hostBisType, String hostCompanyName, String hostCorpName, String hostCorpsocialNum, Date hostOpenDate, String hostTaxType, Date hostRegistDate, Date hostModifyDate, Date hostDeleteDate) {
         this.hostInfoNum = hostInfoNum;
-        this.hostNum = hostNum;
+        this.host = host;
         this.hostBisAddress = hostBisAddress;
         this.hostBisItem = hostBisItem;
         this.hostRegistNum = hostRegistNum;

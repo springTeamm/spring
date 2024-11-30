@@ -127,7 +127,7 @@ public class AuthService {
 
     private HostInfo createHostInfoFromRequest(RegisterHostRequest request, Hosts host) {
         HostInfo hostInfo = new HostInfo();
-        hostInfo.setHostNum(host.getHostNum());
+        hostInfo.setHost(host);
         hostInfo.setHostBisAddress(request.getBusinessAddress());
         hostInfo.setHostBisItem(request.getBusinessItem());
         hostInfo.setHostRegistNum(request.getRegistrationNumber());
