@@ -6,7 +6,7 @@ import com.spring.demo.security.dto.RegisterHostRequest;
 import com.spring.demo.security.dto.RegisterUserRequest;
 import com.spring.demo.security.model.HostInfo;
 import com.spring.demo.security.model.Hosts;
-import com.spring.demo.security.model.Users;
+import com.spring.demo.security.model.User;
 import com.spring.demo.security.repository.HostInfoRepository;
 import com.spring.demo.security.repository.HostRepository;
 import com.spring.demo.security.repository.UserRepository;
@@ -49,7 +49,7 @@ public class AuthService {
     public void registerUser(RegisterUserRequest request) {
         if (isEmailOrUserIdExists(request.getEmail(), request.getUserId())) return;
 
-        Users user = createUserFromRegisterUserRequest(request, "USER");
+        User user = createUserFromRegisterUserRequest(request, "USER");
         userRepository.save(user);
     }
 
@@ -57,12 +57,12 @@ public class AuthService {
         if (isEmailOrUserIdExists(request.getEmail(), request.getUserId())) return;
 
         // 사용자 정보 저장
-        Users user = createUserFromRegisterHostRequest(request, "HOST");
+        User user = createUserFromRegisterHostRequest(request, "HOST");
         userRepository.save(user);
 
         // 호스트 정보 저장
         Hosts host = new Hosts();
-        host.setUserNum(user.getUserNum());
+        host.setUser(user);
         hostRepository.save(host);
 
         // 호스트 상세 정보 저장
@@ -78,7 +78,7 @@ public class AuthService {
                 )
         );
 
-        Users user = userRepository.findByUserEmail(request.getEmail())
+        User user = userRepository.findByUserEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         String token = jwtService.generateToken(user.getUserEmail());
@@ -101,8 +101,8 @@ public class AuthService {
         return false;
     }
 
-    private Users createUserFromRegisterUserRequest(RegisterUserRequest request, String userRights) {
-        Users user = new Users();
+    private User createUserFromRegisterUserRequest(RegisterUserRequest request, String userRights) {
+        User user = new User();
         user.setUserId((request.getUserId()));
         user.setUserPwd(passwordEncoder.encode(request.getPassword()));
         user.setUserEmail(request.getEmail());
@@ -113,8 +113,8 @@ public class AuthService {
         return user;
     }
 
-    private Users createUserFromRegisterHostRequest(RegisterHostRequest request, String userRights) {
-        Users user = new Users();
+    private User createUserFromRegisterHostRequest(RegisterHostRequest request, String userRights) {
+        User user = new User();
         user.setUserId((request.getUserId()));
         user.setUserPwd(passwordEncoder.encode(request.getPassword()));
         user.setUserEmail(request.getEmail());

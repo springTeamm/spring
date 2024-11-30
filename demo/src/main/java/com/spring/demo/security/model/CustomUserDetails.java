@@ -8,9 +8,9 @@ import java.util.Collections;
 
 public class CustomUserDetails implements UserDetails {
 
-    private final Users user;
+    private final User user;
 
-    public CustomUserDetails(Users user) {
+    public CustomUserDetails(User user) {
         this.user = user;
     }
 
@@ -49,7 +49,7 @@ public class CustomUserDetails implements UserDetails {
         return true; // 계정 활성화 여부
     }
 
-    public Users getUser() {
+    public User getUser() {
         return user;
     }
 }

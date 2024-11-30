@@ -16,11 +16,12 @@ public class Hosts {
     @Column(name = "Host_num")
     private Integer hostNum;
 
-    @Column(name = "User_num")
-    private Integer userNum;
+    @ManyToOne
+    @JoinColumn(name = "User_num", referencedColumnName = "User_num")
+    private User user;
 
     public Hosts(Integer hostNum, Integer userNum) {
         this.hostNum = hostNum;
-        this.userNum = userNum;
+        this.user = user;
     }
 }
