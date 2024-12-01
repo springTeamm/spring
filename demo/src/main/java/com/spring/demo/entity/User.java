@@ -1,23 +1,23 @@
-package com.spring.demo.security.model;
+package com.spring.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "User")
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class Users {
+public class User {
     @Id
     @GeneratedValue
     @Column(name="User_num")
     private Integer userNum;
 
     @Column(name="User_id")
-    private Integer userId;
+    private String userId;
 
     @Column(name = "User_pwd")
     private String userPwd;
@@ -37,7 +37,7 @@ public class Users {
     @Column(name = "User_phone")
     private String userPhone;
 
-    public Users(Integer userNum, Integer userId, String userPwd, String userEmail, String userRights, String userName, String userNickname, String userPhone) {
+    public User(Integer userNum, String userId, String userPwd, String userEmail, String userRights, String userName, String userNickname, String userPhone) {
         this.userNum = userNum;
         this.userId = userId;
         this.userPwd = userPwd;

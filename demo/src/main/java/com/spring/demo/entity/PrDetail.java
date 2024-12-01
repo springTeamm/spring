@@ -1,7 +1,7 @@
 package com.spring.demo.entity;
 //ADD COLUMN Pr_description TEXT,
 //ADD COLUMN Pr_hashtags VARCHAR(255); 추가
-import com.spring.demo.security.model.HostInfo;
+import com.spring.demo.entity.HostInfo;
 import jakarta.persistence.*;
 import lombok.*;
 

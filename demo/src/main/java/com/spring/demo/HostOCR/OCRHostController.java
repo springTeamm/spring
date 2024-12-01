@@ -24,28 +24,22 @@ public class OCRHostController {
 
 
     @PostMapping("/host")
-    public ResponseEntity<String> uploadAndProcessFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> processFileWithTemporaryStorage(@RequestParam("file") MultipartFile file) {
+        File tempFile = null;
+
         try {
+            // 임시 디렉토리에 파일 저장
+            tempFile = File.createTempFile("ocr_", ".jpg");
+            file.transferTo(tempFile);
 
-            String uploadDir = System.getProperty("user.dir") + "/uploads";
-            Path uploadPath = Paths.get(uploadDir);
+            // OCR 처리
+            OcrResultDto resultDto = ocrHostService.processImage(tempFile.getAbsolutePath());
 
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-
-            String filePath = uploadDir + "/" + file.getOriginalFilename();
-            File savedFile = new File(filePath);
-            file.transferTo(savedFile);
-
-
-            String response = ocrHostService.processImage(filePath);
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok("OCR 처리 완료: " + resultDto);
 
         } catch (IOException e) {
-            return ResponseEntity.status(500).body("파일 업로드 실패: " + e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("OCR 처리 실패: " + e.getMessage());
+            return ResponseEntity.status(500).body("파일 처리 실패: " + e.getMessage());
         }
     }
+
 }

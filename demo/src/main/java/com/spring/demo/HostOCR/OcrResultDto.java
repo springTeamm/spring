@@ -21,7 +21,7 @@ public class OcrResultDto {
     private String hostCorpsocialNum;
     private String hostTaxType;
 
-     private String hostBisAddress;
+    private String hostBisAddress;
 
 
 

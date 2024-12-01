@@ -1,10 +1,10 @@
 package com.spring.demo.HostOCR;
 
-import com.spring.demo.security.model.HostInfo;
+import com.spring.demo.entity.HostInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository("ocrHostRepostory")
+@Repository
 public interface OcrHostRepository extends JpaRepository<HostInfo, Integer> {
 
 }
