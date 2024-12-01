@@ -24,15 +24,20 @@ public class ReservationService {
     private final HostUserRepository userRepository;
     private final HostPrBookingRepository hostPrBookingRepository;
     private final HostRefundReopository hostRefundRepository;
+    private final HostAdjustmentRepository hostAdjustmentRepository;
+    private final ReviewRepository reviewRepository;
     @Autowired
     public ReservationService(HostPaymentRepository paymentRepository, HostPrBookingRepository prBookingRepository,
-                              HostPracticeRoomRepository practiceRoomRepository, HostUserRepository userRepository, HostPrBookingRepository hostPrBookingRepository,HostRefundReopository hostRefundRepository) {
+                              HostPracticeRoomRepository practiceRoomRepository, HostUserRepository userRepository, HostPrBookingRepository hostPrBookingRepository,HostRefundReopository hostRefundRepository
+    , HostAdjustmentRepository hostAdjustmentRepository, ReviewRepository reviewRepository) {
         this.paymentRepository = paymentRepository;
         this.prBookingRepository = prBookingRepository;
         this.practiceRoomRepository = practiceRoomRepository;
         this.userRepository = userRepository;
         this.hostPrBookingRepository = hostPrBookingRepository;
         this.hostRefundRepository = hostRefundRepository;
+        this.hostAdjustmentRepository = hostAdjustmentRepository;
+        this.reviewRepository = reviewRepository;
     }
 
     public List<ReservationDTO> getReservations() {
@@ -55,35 +60,42 @@ public class ReservationService {
                     payment.getPayDate(),
                     payment.getPayPrice(),
                     booking.getBookingTotalPerson(),
-                    "정상" // 클레임 상태 (임의 값 설정)
+                    room.getLocationName()
 
             );
         }).collect(Collectors.toList());
     }
-    @Transactional
 
+    @Transactional
     public void deleteBookingsByIds(List<Integer> bookingNums) {
         for (Integer bookingNum : bookingNums) {
             // 1. Payment 조회
             Payment payment = paymentRepository.findByBookingNum(bookingNum)
                     .orElseThrow(() -> new RuntimeException("Payment not found for bookingNum: " + bookingNum));
 
-            // 2. Refund 데이터 추가 (삭제 이전에 추가)
+            // 2. Refund 데이터 생성 및 저장 (Payment 삭제 전에 생성)
             Refund refund = new Refund();
             refund.setPayNum(payment.getPayNum());
             refund.setRePrice(payment.getPayPrice());
             refund.setReDate(new Date()); // 현재 날짜로 설정
             hostRefundRepository.save(refund);
 
-            // 3. Refund 데이터 삭제
+            // 3. Refund 관련 데이터 삭제
             hostRefundRepository.deleteByPayNum(payment.getPayNum());
 
-            // 4. Payment 데이터 삭제
+            // 4. Adjustment 데이터 삭제
+            hostAdjustmentRepository.deleteByPayNum(payment.getPayNum());
+
+            // 5. Payment 데이터 삭제
             paymentRepository.delete(payment);
 
-            // 5. PrBooking 데이터 삭제
+            // 7. Review 데이터 삭제
+            reviewRepository.deleteByBookingNum(bookingNum);
+            // 6. PrBooking 데이터 삭제
             prBookingRepository.deleteById(bookingNum);
+
         }
+
     }
 
 }

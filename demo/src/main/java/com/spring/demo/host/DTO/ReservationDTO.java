@@ -19,8 +19,8 @@ public class ReservationDTO {
     private Date payDate;
     private Integer payPrice;
     private Integer bookingTotalPerson;
-    private String claimStatus;
-  ;
+
+    private String locationName;
 
 
 }

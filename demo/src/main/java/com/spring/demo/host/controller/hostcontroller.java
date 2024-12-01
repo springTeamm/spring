@@ -80,15 +80,19 @@ public class hostcontroller {
         return reservationService.getReservations();
     }
 
-    @PostMapping("/rooms/my-rooms/bookings/delete")
-    public ResponseEntity<Void> deleteBookings(@RequestBody List<Integer> bookingNums) {
-        try {
-            reservationService.deleteBookingsByIds(bookingNums); // 예약 번호 목록을 이용해 삭제 처리
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    @PostMapping("/rooms/my-rooms/bookings/cancel")
+
+    public ResponseEntity<?> cancelBookings(@RequestBody Map<String, List<Integer>> request) {
+        List<Integer> bookingNums = request.get("bookingNums");
+        if (bookingNums == null || bookingNums.isEmpty()) {
+            return ResponseEntity.badRequest().build(); // 잘못된 요청 처리
         }
+        reservationService.deleteBookingsByIds(bookingNums);
+
+        return ResponseEntity.ok().build();
     }
+
+
 
 
 
@@ -102,5 +106,6 @@ public class hostcontroller {
         List<SalesDTO> sales = salesService.getMonthlySales();
         return ResponseEntity.ok(sales);
     }
+
 
 }
