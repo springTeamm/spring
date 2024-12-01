@@ -26,6 +26,9 @@ dependencies {
     implementation group: 'org.webjars', name: 'sockjs-client', version: '1.0.2'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
+    implementation 'jakarta.servlet:jakarta.servlet-api:5.0.0'
+    implementation 'org.springframework:spring-web:6.0.0'
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
