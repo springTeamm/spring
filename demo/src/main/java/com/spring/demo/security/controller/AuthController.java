@@ -6,6 +6,7 @@ import com.spring.demo.security.dto.RegisterHostRequest;
 import com.spring.demo.security.dto.RegisterUserRequest;
 import com.spring.demo.security.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,16 +22,23 @@ public class AuthController {
 
     @PostMapping("/register/user")
     public ResponseEntity<?> registerUser(@RequestBody RegisterUserRequest request) {
-        authService.registerUser(request);
+        boolean exists = authService.registerUser(request);
+        if (exists) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Email or User ID already in use");
+        }
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/register/host")
     public ResponseEntity<?> registerHost(@RequestBody RegisterHostRequest request) {
-        authService.registerHost(request);
+        boolean exists = authService.registerHost(request);
+        if (exists) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Email or User ID already in use");
+        }
         return ResponseEntity.ok().build();
     }
-
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
         return ResponseEntity.ok(authService.login(request));

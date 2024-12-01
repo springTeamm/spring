@@ -46,28 +46,31 @@ public class AuthService {
         this.authenticationManager = authenticationManager;
     }
 
-    public void registerUser(RegisterUserRequest request) {
-        if (isEmailOrUserIdExists(request.getEmail(), request.getUserId())) return;
+    public boolean registerUser(RegisterUserRequest request) {
+        if (isEmailOrUserIdExists(request.getEmail(), request.getUserId())) {
+            return true; // 이미 존재하면 true 반환
+        }
 
         User user = createUserFromRegisterUserRequest(request, "USER");
         userRepository.save(user);
+        return false; // 성공적으로 저장되면 false 반환
     }
 
-    public void registerHost(RegisterHostRequest request) {
-        if (isEmailOrUserIdExists(request.getEmail(), request.getUserId())) return;
+    public boolean registerHost(RegisterHostRequest request) {
+        if (isEmailOrUserIdExists(request.getEmail(), request.getUserId())) {
+            return true; // 이미 존재하면 true 반환
+        }
 
-        // 사용자 정보 저장
         User user = createUserFromRegisterHostRequest(request, "HOST");
         userRepository.save(user);
 
-        // 호스트 정보 저장
         Hosts host = new Hosts();
         host.setUser(user);
         hostRepository.save(host);
 
-        // 호스트 상세 정보 저장
         HostInfo hostInfo = createHostInfoFromRequest(request, host);
         hostInfoRepository.save(hostInfo);
+        return false; // 성공적으로 저장되면 false 반환
     }
 
     public AuthResponse login(AuthRequest request) {
