@@ -1,7 +1,7 @@
 package com.spring.demo.security.config;
 
-import com.spring.demo.security.model.CustomUserDetails;
-import com.spring.demo.security.model.User;
+import com.spring.demo.security.entity.CustomUserDetails;
+import com.spring.demo.security.entity.User;
 import com.spring.demo.security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

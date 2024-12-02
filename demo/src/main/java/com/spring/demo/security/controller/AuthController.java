@@ -1,10 +1,9 @@
 package com.spring.demo.security.controller;
 
 import com.spring.demo.security.dto.AuthRequest;
-import com.spring.demo.security.dto.AuthResponse;
 import com.spring.demo.security.dto.RegisterHostRequest;
 import com.spring.demo.security.dto.RegisterUserRequest;
-import com.spring.demo.security.model.User;
+import com.spring.demo.security.entity.User;
 import com.spring.demo.security.service.AuthService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

@@ -2,7 +2,7 @@ package com.spring.demo.HostOCR;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spring.demo.security.model.HostInfo;
+import com.spring.demo.security.entity.HostInfo;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
