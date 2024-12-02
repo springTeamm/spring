@@ -26,6 +26,8 @@ dependencies {
     // 테스트용 타임리프
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
+    // modelmapper - 서로 다른 클래스값 한 번에 복사
+    implementation 'org.modelmapper:modelmapper:3.1.0'
 
     implementation group: 'org.webjars', name: 'sockjs-client', version: '1.0.2'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
