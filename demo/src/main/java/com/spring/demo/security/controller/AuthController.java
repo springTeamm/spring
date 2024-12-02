@@ -4,7 +4,9 @@ import com.spring.demo.security.dto.AuthRequest;
 import com.spring.demo.security.dto.AuthResponse;
 import com.spring.demo.security.dto.RegisterHostRequest;
 import com.spring.demo.security.dto.RegisterUserRequest;
+import com.spring.demo.security.model.User;
 import com.spring.demo.security.service.AuthService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +41,23 @@ public class AuthController {
         }
         return ResponseEntity.ok().build();
     }
+
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-        return ResponseEntity.ok(authService.login(request));
+    public ResponseEntity<String> login(HttpSession session, @RequestBody AuthRequest request) {
+        User user = authService.authenticateUser(request);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid email or password");
+        }
+
+        // 세션에 사용자 정보 저장
+        session.setAttribute("user", user);
+        return ResponseEntity.ok("Login successful");
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpSession session) {
+        session.invalidate(); // 세션 무효화
+        return ResponseEntity.ok("Logout successful");
     }
 }

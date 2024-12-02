@@ -9,5 +9,6 @@ import java.util.Optional;
 
 @Repository("securityHostRepository")
 public interface HostRepository extends JpaRepository<Hosts, Long> {
+
     Optional<Hosts> findByUser(User user);
 }

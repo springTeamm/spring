@@ -153,4 +153,19 @@ public class AuthService {
         hostInfo.setHostRegistDate(new Date());
         return hostInfo;
     }
+
+    // 사용자 인증을 수행하는 메서드 추가
+    public User authenticateUser(AuthRequest request) {
+        // 이메일로 사용자 조회
+        User user = userRepository.findByUserEmail(request.getEmail())
+                .orElse(null);
+
+        // 사용자가 존재하지 않거나 비밀번호가 일치하지 않는 경우 null 반환
+        if (user == null || !passwordEncoder.matches(request.getPassword(), user.getUserPwd())) {
+            return null;
+        }
+
+        // 인증된 사용자 객체 반환
+        return user;
+    }
 }

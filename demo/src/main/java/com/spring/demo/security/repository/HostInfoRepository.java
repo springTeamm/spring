@@ -9,5 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface HostInfoRepository extends JpaRepository<HostInfo, Long> {
+
     Optional<HostInfo> findByHost(Hosts host);
 }

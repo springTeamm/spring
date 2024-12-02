@@ -26,6 +26,7 @@
     <orderEntry type="jdk" jdkName="temurin-17" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.projectlombok:lombok:1.18.34" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-thymeleaf:3.3.5" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-security:3.3.5" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-websocket:3.3.5" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-web:3.3.5" level="project" />
@@ -40,6 +41,7 @@
     <orderEntry type="library" name="Gradle: io.jsonwebtoken:jjwt-jackson:0.11.5" level="project" />
     <orderEntry type="library" name="Gradle: io.jsonwebtoken:jjwt-api:0.11.5" level="project" />
     <orderEntry type="library" name="Gradle: org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.thymeleaf:thymeleaf-spring6:3.1.2.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.security:spring-security-config:6.3.4" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.security:spring-security-web:6.3.4" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-aop:6.1.14" level="project" />
@@ -69,6 +71,8 @@
     <orderEntry type="library" name="Gradle: org.webjars:swagger-ui:4.15.5" level="project" />
     <orderEntry type="library" name="Gradle: org.webjars:webjars-locator-core:0.58" level="project" />
     <orderEntry type="library" name="Gradle: io.github.classgraph:classgraph:4.8.149" level="project" />
+    <orderEntry type="library" name="Gradle: org.thymeleaf:thymeleaf:3.1.2.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:2.0.16" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.security:spring-security-core:6.3.4" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-context:6.1.14" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-beans:6.1.14" level="project" />
@@ -89,7 +93,6 @@
     <orderEntry type="library" name="Gradle: org.springframework.data:spring-data-commons:3.3.5" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-tx:6.1.14" level="project" />
     <orderEntry type="library" name="Gradle: org.antlr:antlr4-runtime:4.13.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:2.0.16" level="project" />
     <orderEntry type="library" name="Gradle: jakarta.persistence:jakarta.persistence-api:3.1.0" level="project" />
     <orderEntry type="library" name="Gradle: jakarta.transaction:jakarta.transaction-api:2.0.1" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-classic:1.5.11" level="project" />
@@ -100,6 +103,8 @@
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.17.2" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.17.2" level="project" />
     <orderEntry type="library" name="Gradle: org.springdoc:springdoc-openapi-starter-common:2.0.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.attoparser:attoparser:2.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.unbescape:unbescape:1.1.6.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.security:spring-security-crypto:6.3.4" level="project" />
     <orderEntry type="library" name="Gradle: io.micrometer:micrometer-commons:1.13.6" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-core:1.5.11" level="project" />
