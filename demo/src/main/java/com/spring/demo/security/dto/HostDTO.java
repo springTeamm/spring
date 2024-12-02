@@ -3,12 +3,13 @@ package com.spring.demo.security.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder  // 상속을 고려
 public class HostDTO extends UserDTO {
 
     @NotBlank(message = "호스트 유형은 필수 입력 항목입니다.")
