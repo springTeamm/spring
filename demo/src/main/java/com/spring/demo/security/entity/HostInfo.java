@@ -3,6 +3,7 @@ package com.spring.demo.security.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -51,13 +52,13 @@ public class HostInfo {
     private String hostTaxType; // 세금 유형 (과세, 면세 등)
 
     @Column(name = "Host_regist_date")
-    private Date hostRegistDate; // 호스트 정보 등록일
+    private LocalDateTime hostRegistDate; // 호스트 정보 등록일
 
     @Column(name = "Host_modify_date")
-    private Date hostModifyDate; // 정보 수정일
+    private LocalDateTime hostModifyDate; // 정보 수정일
 
     @Column(name = "Host_delete_date")
-    private Date hostDeleteDate; // 삭제일 (삭제 예정일자)
+    private LocalDateTime hostDeleteDate; // 삭제일 (삭제 예정일자)
 
     public HostInfo(Hosts host, String hostBisAddress, String hostBisItem, String hostRegistNum,
                     String hostBisType, String hostCompanyName, String hostCorpName,

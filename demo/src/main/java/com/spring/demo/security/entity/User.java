@@ -32,6 +32,9 @@ public class User {
     @Column(name = "User_password")
     private String userPassword; // 사용자 비밀번호
 
+    @Column(name = "User_rights")
+    private String userRights; // 사용자 권한
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Hosts hosts; // 사용자는 호스트와 1:1 관계 (호스트가 있으면 관련된 정보도 함께 관리)
 

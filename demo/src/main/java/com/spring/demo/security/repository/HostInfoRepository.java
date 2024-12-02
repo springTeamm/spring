@@ -13,6 +13,6 @@ public interface HostInfoRepository extends JpaRepository<HostInfo, Integer> {
     // 호스트 등록 번호로 호스트 정보 찾기
     HostInfo findByHostRegistNum(String registNum);
 
-    HostInfo findByHost_HostNum(String hostName);
+    HostInfo findByHost_HostNum(Integer hostName);
 
 }
