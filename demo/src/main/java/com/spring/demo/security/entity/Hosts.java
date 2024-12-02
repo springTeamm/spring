@@ -11,17 +11,17 @@ import lombok.*;
 @ToString
 @EqualsAndHashCode
 public class Hosts {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Host_num")
-    private Integer hostNum;
+    private Integer hostNum; // 호스트 고유 번호 (PK)
 
-    @ManyToOne
-    @JoinColumn(name = "User_num", referencedColumnName = "User_num")
-    private User user;
+    @OneToOne
+    @JoinColumn(name = "User_num")
+    private User user; // 호스트는 User와 1:1 관계 (User 엔티티와 연결됨)
 
-    public Hosts(Integer hostNum, Integer userNum) {
-        this.hostNum = hostNum;
-        this.user = user;
+    public Hosts(User user) {
+        this.user = user; // 호스트와 연결된 사용자 정보
     }
 }

@@ -4,47 +4,43 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "User")
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class User {
+
     @Id
-    @GeneratedValue
-    @Column(name="User_num")
-    private Integer userNum;
-
-    @Column(name="User_id")
-    private String userId;
-
-    @Column(name = "User_pwd")
-    private String userPwd;
-
-    @Column(name = "User_email")
-    private String userEmail;
-
-    @Column(name = "User_rights")
-    private String userRights;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "User_num")
+    private Integer userNum; // 사용자 고유 번호 (PK)
 
     @Column(name = "User_name")
-    private String userName;
+    private String userName; // 사용자 이름
 
-    @Column(name = "User_nickname")
-    private String userNickname;
+    @Column(name = "User_id")
+    private String userId; // 사용자 ID (로그인 시 사용)
+
+    @Column(name = "User_email")
+    private String userEmail; // 사용자 이메일
 
     @Column(name = "User_phone")
-    private String userPhone;
+    private String userPhone; // 사용자 전화번호
 
-    public User(Integer userNum, String userId, String userPwd, String userEmail, String userRights, String userName, String userNickname, String userPhone) {
+    @Column(name = "User_password")
+    private String userPassword; // 사용자 비밀번호
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Hosts hosts; // 사용자는 호스트와 1:1 관계 (호스트가 있으면 관련된 정보도 함께 관리)
+
+    public User(Integer userNum, String userName, String userId, String userEmail, String userPhone, String userPassword) {
         this.userNum = userNum;
-        this.userId = userId;
-        this.userPwd = userPwd;
-        this.userEmail = userEmail;
-        this.userRights = userRights;
         this.userName = userName;
-        this.userNickname = userNickname;
+        this.userId = userId;
+        this.userEmail = userEmail;
         this.userPhone = userPhone;
+        this.userPassword = userPassword;
     }
 }
