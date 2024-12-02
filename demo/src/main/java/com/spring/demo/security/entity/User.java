@@ -43,4 +43,9 @@ public class User {
         this.userPhone = userPhone;
         this.userPassword = userPassword;
     }
+
+    // isEmpty() 메소드 구현
+    public boolean isHostsEmpty() {
+        return hosts == null || hosts.getUser().isHostsEmpty();
+    }
 }

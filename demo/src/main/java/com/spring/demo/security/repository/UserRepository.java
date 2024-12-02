@@ -12,9 +12,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     // 사용자 ID로 사용자 찾기
     User findByUserId(String userId);
 
-    // 이메일로 사용자 찾기
-    User findByUserEmail(String userEmail);
-
     // 사용자 ID 중복 확인
     boolean existsByUserId(String userId);
 
