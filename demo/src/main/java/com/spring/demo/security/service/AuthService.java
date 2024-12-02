@@ -10,6 +10,7 @@ import com.spring.demo.security.model.User;
 import com.spring.demo.security.repository.HostInfoRepository;
 import com.spring.demo.security.repository.HostRepository;
 import com.spring.demo.security.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,22 +29,22 @@ public class AuthService {
     private final HostRepository hostRepository;
     private final HostInfoRepository hostInfoRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final HttpSession httpSession;
 
     // 생성자 주입
     public AuthService(UserRepository userRepository,
                        HostRepository hostRepository,
                        HostInfoRepository hostInfoRepository,
                        @Qualifier("passwordEncoder") PasswordEncoder passwordEncoder,
-                       JwtService jwtService,
-                       AuthenticationManager authenticationManager) {
+                       AuthenticationManager authenticationManager,
+                       HttpSession httpSession) {
         this.userRepository = userRepository;
         this.hostRepository = hostRepository;
         this.hostInfoRepository = hostInfoRepository;
         this.passwordEncoder = passwordEncoder; // 초기화
-        this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
+        this.httpSession = httpSession;
     }
 
     public boolean registerUser(RegisterUserRequest request) {
@@ -84,12 +85,19 @@ public class AuthService {
         User user = userRepository.findByUserEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        String token = jwtService.generateToken(user.getUserEmail());
-        return new AuthResponse(token, user.getUserRights());
+        // 세션에 사용자 정보 저장
+        httpSession.setAttribute("user", user);
+
+        return new AuthResponse("Session established", user.getUserRights());
     }
 
-    // 중복 제거를 위한 유틸리티 메서드
+    // 로그아웃 메서드 추가
+    public void logout() {
+        httpSession.invalidate(); // 세션 무효화
+    }
 
+
+    // 중복 제거를 위한 유틸리티 메서드
     private boolean isEmailOrUserIdExists(String email, String userId) {
         if (userRepository.existsByUserEmail(email)) {
             System.out.println("Email is already in use");
