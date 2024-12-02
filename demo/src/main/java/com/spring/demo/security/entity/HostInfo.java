@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "host_info")
@@ -46,7 +45,7 @@ public class HostInfo {
     private String hostCorpsocialNum; // 법인 사업자 등록 번호
 
     @Column(name = "Host_open_date")
-    private Date hostOpenDate; // 사업 개시 일자
+    private LocalDateTime hostOpenDate; // 사업 개시 일자
 
     @Column(name = "Host_tax_type")
     private String hostTaxType; // 세금 유형 (과세, 면세 등)

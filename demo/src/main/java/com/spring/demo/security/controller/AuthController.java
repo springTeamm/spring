@@ -50,7 +50,7 @@ public class AuthController {
         } catch (RuntimeException e) {
             // 중복 아이디, 이메일 등의 오류 처리
             model.addAttribute("errorMessage", e.getMessage());
-            return "signup-user";
+            return "redirect:/error";
         }
     }
 
@@ -78,7 +78,15 @@ public class AuthController {
         } catch (RuntimeException e) {
             // 중복 아이디, 사업자 번호 등의 오류 처리
             model.addAttribute("errorMessage", e.getMessage());
-            return "signup-host";
+            return "redirect:/error";
         }
     }
+
+    // 에러 페이지
+    @GetMapping("/error")
+    public String errorPage(Model model) {
+        // 에러 메시지를 모델에 담아 에러 페이지로 전달
+        return "error-page";
+    }
+
 }
