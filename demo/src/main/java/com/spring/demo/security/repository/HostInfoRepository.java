@@ -8,7 +8,11 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface HostInfoRepository extends JpaRepository<HostInfo, Long> {
+public interface HostInfoRepository extends JpaRepository<HostInfo, Integer> {
 
-    Optional<HostInfo> findByHost(Hosts host);
+    // 호스트 등록 번호로 호스트 정보 찾기
+    HostInfo findByHostRegistNum(String registNum);
+
+    HostInfo findByHost_HostNum(String hostName);
+
 }

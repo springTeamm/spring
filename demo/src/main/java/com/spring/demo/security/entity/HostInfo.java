@@ -13,53 +13,55 @@ import java.util.Date;
 @ToString
 @EqualsAndHashCode
 public class HostInfo {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Host_info_num")
-    private Integer hostInfoNum;
+    private Integer hostInfoNum; // 호스트 정보 고유 번호 (PK)
 
     @OneToOne
-    @JoinColumn(name = "host_num")
-    private Hosts host;
+    @JoinColumn(name = "Host_num")
+    private Hosts host; // Hosts 엔티티와 1:1 관계 (각 호스트의 추가 정보를 담는 엔티티)
 
-    @Column(name = "Host_bis_address") //사업장 주소 정보
-    private String hostBisAddress;
+    @Column(name = "Host_bis_address")
+    private String hostBisAddress; // 사업장 주소
 
-    @Column(name = "Host_bis_item") //사업장 소재지 정보
-    private String hostBisItem;
+    @Column(name = "Host_bis_item")
+    private String hostBisItem; // 사업자 등록 관련 업태
 
-    @Column(name = "Host_regist_num") //사업자 등록 번호
-    private String hostRegistNum;
+    @Column(name = "Host_regist_num")
+    private String hostRegistNum; // 사업자 등록 번호
 
-    @Column(name = "Host_bis_type") //사업자 업종 정보
-    private String hostBisType;
+    @Column(name = "Host_bis_type")
+    private String hostBisType; // 사업자 업종
 
-    @Column(name = "Host_company_name") //기업 이름
-    private String hostCompanyName;
+    @Column(name = "Host_company_name")
+    private String hostCompanyName; // 회사명
 
-    @Column(name = "Host_corp_name") //법인 이름
-    private String hostCorpName;
+    @Column(name = "Host_corp_name")
+    private String hostCorpName; // 법인명
 
-    @Column(name = "Host_corepsocial_num") // 법인 사업자 등록번호
-    private String hostCorpsocialNum;
+    @Column(name = "Host_corepsocial_num")
+    private String hostCorpsocialNum; // 법인 사업자 등록 번호
 
-    @Column(name = "Host_open_date") //발행 일자 정보
-    private Date hostOpenDate;
+    @Column(name = "Host_open_date")
+    private Date hostOpenDate; // 사업 개시 일자
 
-    @Column(name = "Host_tax_type") //과세 유형 정보
-    private String hostTaxType;
+    @Column(name = "Host_tax_type")
+    private String hostTaxType; // 세금 유형 (과세, 면세 등)
 
-    @Column(name = "Host_regist_date") //등록일
-    private Date hostRegistDate;
+    @Column(name = "Host_regist_date")
+    private Date hostRegistDate; // 호스트 정보 등록일
 
-    @Column(name = "Host_modify_date") //수정일
-    private Date hostModifyDate;
+    @Column(name = "Host_modify_date")
+    private Date hostModifyDate; // 정보 수정일
 
-    @Column(name = "Host_delete_date") //삭제일
-    private Date hostDeleteDate;
+    @Column(name = "Host_delete_date")
+    private Date hostDeleteDate; // 삭제일 (삭제 예정일자)
 
-    public HostInfo(Integer hostInfoNum, Integer hostNum, String hostBisAddress, String hostBisItem, String hostRegistNum, String hostBisType, String hostCompanyName, String hostCorpName, String hostCorpsocialNum, Date hostOpenDate, String hostTaxType, Date hostRegistDate, Date hostModifyDate, Date hostDeleteDate) {
-        this.hostInfoNum = hostInfoNum;
+    public HostInfo(Hosts host, String hostBisAddress, String hostBisItem, String hostRegistNum,
+                    String hostBisType, String hostCompanyName, String hostCorpName,
+                    String hostCorpsocialNum, String hostTaxType) {
         this.host = host;
         this.hostBisAddress = hostBisAddress;
         this.hostBisItem = hostBisItem;
@@ -68,10 +70,6 @@ public class HostInfo {
         this.hostCompanyName = hostCompanyName;
         this.hostCorpName = hostCorpName;
         this.hostCorpsocialNum = hostCorpsocialNum;
-        this.hostOpenDate = hostOpenDate;
         this.hostTaxType = hostTaxType;
-        this.hostRegistDate = hostRegistDate;
-        this.hostModifyDate = hostModifyDate;
-        this.hostDeleteDate = hostDeleteDate;
     }
 }
