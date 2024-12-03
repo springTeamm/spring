@@ -36,12 +36,12 @@ public class UserService {
         }
 
         // 비밀번호 일치 확인
-        if (!userDTO.getUserPwd().equals(userDTO.getConfirmUserPwd())) {
+        if (!userDTO.getUserPassword().equals(userDTO.getConfirmUserPwd())) {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
 
         // 비밀번호 암호화
-        userDTO.setUserPwd(passwordEncoder.encode(userDTO.getUserPwd()));
+        userDTO.setUserPassword(passwordEncoder.encode(userDTO.getUserPassword()));
 
         // DTO를 엔티티로 변환 및 저장
         User user = modelMapper.map(userDTO, User.class);
