@@ -35,7 +35,7 @@
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter:3.3.5" level="project" />
     <orderEntry type="library" name="Gradle: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
     <orderEntry type="library" name="Gradle: org.json:json:20210307" level="project" />
-    <orderEntry type="library" name="Gradle: org.modelmapper:modelmapper:3.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.modelmapper:modelmapper:3.1.1" level="project" />
     <orderEntry type="library" name="Gradle: org.webjars:sockjs-client:1.0.2" level="project" />
     <orderEntry type="library" name="Gradle: com.google.guava:guava:12.0" level="project" />
     <orderEntry type="library" name="Gradle: io.jsonwebtoken:jjwt-impl:0.11.5" level="project" />
