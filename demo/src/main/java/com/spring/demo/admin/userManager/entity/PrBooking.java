@@ -1,9 +1,10 @@
-package com.spring.demo.entity;
+package com.spring.demo.admin.userManager.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -25,8 +26,8 @@ public class PrBooking {
     @Column(name = "User_num") //유저 번호
     private Integer userNum;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
-    private Date bookingDate;
+    @Column(name = "Booking_date")
+    private LocalDateTime bookingDate;
 
     @Column(name = "Booking_total_person") // 예약 총인원
     private Integer bookingTotalPerson;
@@ -41,7 +42,7 @@ public class PrBooking {
     private String bookingPaymentMethod;
 
 
-    public PrBooking(Integer bookingNum, Integer prNum, Integer userNum, Date bookingDate, Integer bookingTotalPerson, Integer bookingTotalPrice, Integer bookingUsingTime, String bookingPaymentMethod) {
+    public PrBooking(Integer bookingNum, Integer prNum, Integer userNum, LocalDateTime bookingDate, Integer bookingTotalPerson, Integer bookingTotalPrice, Integer bookingUsingTime, String bookingPaymentMethod) {
         this.bookingNum = bookingNum;
         this.prNum = prNum;
         this.userNum = userNum;

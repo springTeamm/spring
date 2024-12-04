@@ -1,4 +1,4 @@
-package com.spring.demo.entity;
+package com.spring.demo.admin.userManager.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
