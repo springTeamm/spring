@@ -28,7 +28,7 @@ public class HostService {
     @Transactional
     public User registerHost(HostDTO hostDTO) {
         // 비밀번호 일치 확인
-        if (!hostDTO.getUserPwd().equals(hostDTO.getConfirmUserPwd())) {
+        if (!hostDTO.getUserPassword().equals(hostDTO.getConfirmUserPwd())) {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
 
@@ -48,7 +48,7 @@ public class HostService {
         }
 
         // 비밀번호 암호화
-        hostDTO.setUserPwd(passwordEncoder.encode(hostDTO.getUserPwd()));
+        hostDTO.setUserPassword(passwordEncoder.encode(hostDTO.getUserPassword()));
 
         // 사용자 엔티티 생성
         User user = modelMapper.map(hostDTO, User.class);
