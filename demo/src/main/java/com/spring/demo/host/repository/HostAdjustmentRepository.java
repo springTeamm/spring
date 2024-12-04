@@ -21,4 +21,5 @@ public interface HostAdjustmentRepository extends JpaRepository<Adjustment, Inte
     @Transactional
     @Query("DELETE FROM Adjustment a WHERE a.payNum = :payNum")
     void deleteByPayNum(@Param("payNum") Integer payNum);
+
 }

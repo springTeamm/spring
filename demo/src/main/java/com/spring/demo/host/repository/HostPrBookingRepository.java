@@ -9,4 +9,8 @@ import java.util.Optional;
 @Repository
 public interface HostPrBookingRepository extends JpaRepository<PrBooking,Integer> {
     Optional<PrBooking> findByBookingNum(Integer bookingNum);
+
+    Optional<PrBooking> deleteByPrNum(Integer roomId);
+
+    Optional<PrBooking> deleteByBookingNum(Integer roomId);
 }

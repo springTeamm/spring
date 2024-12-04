@@ -39,4 +39,5 @@ public interface HostPaymentRepository extends JpaRepository<Payment,Integer> {
     List<Payment> findAll();
 
 
+    Optional<Payment> deleteByBookingNum(Integer roomId);
 }

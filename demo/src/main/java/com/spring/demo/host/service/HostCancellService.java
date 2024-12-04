@@ -30,10 +30,10 @@ public class HostCancellService {
     @Autowired
     private PrBookingRepository prBookingRepository;
     public List<ReservationCancellationDTO> getAllCancellations() {
-        // Native Query 결과 가져오기
+
         List<Object[]> rawResults = hostpaymentRepository.findAllWithDetails();
 
-        // DTO로 매핑
+
         List<ReservationCancellationDTO> cancellations = new ArrayList<>();
         for (Object[] result : rawResults) {
             ReservationCancellationDTO dto = new ReservationCancellationDTO();

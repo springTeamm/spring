@@ -23,12 +23,12 @@ public class ReservationService {
     private final HostPracticeRoomRepository practiceRoomRepository;
     private final HostUserRepository userRepository;
     private final HostPrBookingRepository hostPrBookingRepository;
-    private final HostRefundReopository hostRefundRepository;
+    private final HostRefund hostRefundRepository;
     private final HostAdjustmentRepository hostAdjustmentRepository;
     private final ReviewRepository reviewRepository;
     @Autowired
     public ReservationService(HostPaymentRepository paymentRepository, HostPrBookingRepository prBookingRepository,
-                              HostPracticeRoomRepository practiceRoomRepository, HostUserRepository userRepository, HostPrBookingRepository hostPrBookingRepository,HostRefundReopository hostRefundRepository
+                              HostPracticeRoomRepository practiceRoomRepository, HostUserRepository userRepository, HostPrBookingRepository hostPrBookingRepository,HostRefund hostRefundRepository
     , HostAdjustmentRepository hostAdjustmentRepository, ReviewRepository reviewRepository) {
         this.paymentRepository = paymentRepository;
         this.prBookingRepository = prBookingRepository;

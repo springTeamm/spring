@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface ReviewRepository extends JpaRepository<PrReview, Integer> {
     Optional<PrReview> deleteByBookingNum(Integer bookingNum);
-}
+
+   }

@@ -5,11 +5,8 @@ import com.spring.demo.category.service.PracticeRoomService;
 import com.spring.demo.entity.PrReview;
 import com.spring.demo.host.DTO.*;
 
-import com.spring.demo.host.service.HostCancellService;
+import com.spring.demo.host.service.*;
 
-import com.spring.demo.host.service.ReservationService;
-import com.spring.demo.host.service.ReviewService;
-import com.spring.demo.host.service.SalesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,19 +24,23 @@ public class hostcontroller {
     private final ReservationService reservationService;
     private final HostCancellService hostcancellService;
     private final SalesService salesService;
+    private final HostInfoPageService hostInfoPageService;
 
     @Autowired
     private HostCancellService hostCancellService;
 //    private final HostPageService hostPageService;
 
     @Autowired
+    private SpaceSelectService hostspaceSelectService;
+    @Autowired
     public hostcontroller(ReviewService reviewService, ReservationService reservationService, HostCancellService hostcancellService
-    , SalesService salesService) {
+    , SalesService salesService, HostInfoPageService hostInfoPageService) {
         this.reviewService = reviewService;
 //        this.hostPageService = hostPageService;
         this.reservationService = reservationService;
         this.hostcancellService = hostcancellService;
         this.salesService = salesService;
+        this.hostInfoPageService = hostInfoPageService;
     }
 
     // 1. 리뷰 목록 가져오기
@@ -107,5 +108,24 @@ public class hostcontroller {
         return ResponseEntity.ok(sales);
     }
 
+    @GetMapping("/spacelist")
+    public List<HostPracticeRoomDTO> getPracticeRooms() {
+        return hostspaceSelectService.getPracticeRooms();
+    }
+    @PostMapping("/spacelist/deleteRooms")
+    public ResponseEntity<String> deleteRooms(@RequestBody Map<String, List<Integer>> payload) {
+        List<Integer> roomIds = payload.get("roomIds"); // "roomIds" 키로 배열 추출
+        hostspaceSelectService.deleteRooms(roomIds);
+        return ResponseEntity.ok("삭제 완료");
 
+    }
+    @GetMapping("/hostinfo")
+    public ResponseEntity<HostInfoPageDTO> getHostInfo(@RequestParam(required = false) Integer hostNum) {
+        // hostNum이 없으면 기본값으로 1 사용
+        if (hostNum == null) {
+            hostNum = 1; // 임시 값
+        }
+        HostInfoPageDTO hostInfo = hostInfoPageService.getHostInfoByHostNum(hostNum);
+        return ResponseEntity.ok(hostInfo);
+    }
 }

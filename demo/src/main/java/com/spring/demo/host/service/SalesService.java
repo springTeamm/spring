@@ -74,18 +74,24 @@ public class SalesService {
                     .merge(categoryName, adjustment.getAdPrice(), Integer::sum);
         }
 
-        // Step 7: Map to DTOs
         List<SalesDTO> salesDTOList = new ArrayList<>();
+        int[] runningAccumulatedSales = {0}; // 배열을 사용해 effectively final 상태 유지
+
         monthlySales.forEach((month, categorySales) -> {
-            categorySales.forEach((categoryName, totalSales) -> {
+            for (Map.Entry<String, Integer> entry : categorySales.entrySet()) {
+                String categoryName = entry.getKey();
+                int salesAmount = entry.getValue();
+
+                runningAccumulatedSales[0] += salesAmount; // 배열의 값을 변경
+
                 SalesDTO dto = new SalesDTO();
                 dto.setMonth(month);
                 dto.setSalesItem(categoryName);
-                dto.setSalesAmount(totalSales);
-                dto.setAccumulatedSales(0); // 누적 매출 계산 추가 가능
+                dto.setSalesAmount(salesAmount);
+                dto.setAccumulatedSales(runningAccumulatedSales[0]); // 누적 매출 설정
                 dto.setNote("정상");
                 salesDTOList.add(dto);
-            });
+            }
         });
 
         return salesDTOList;

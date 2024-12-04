@@ -2,10 +2,13 @@ package com.spring.demo.entity;
 //ADD COLUMN Pr_description TEXT,
 //ADD COLUMN Pr_hashtags VARCHAR(255); 추가
 import com.spring.demo.entity.HostInfo;
+
+import com.spring.demo.entity.HostInfo;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "pr_detail")
@@ -46,16 +49,32 @@ public class PrDetail {
 
     @Column(name = "pr_description", columnDefinition = "TEXT") // 연습실 설명
     private String prDescription;
+
     @Column(name = "pr_name")
     private String prName;
+
     @Column(name = "Host_num") // HostInfo와의 연결 (FK)
     private Integer hostNum;
 
     @Column(name = "Location_name") // 장소명
     private String locationName;
+
     @ManyToOne
     @JoinColumn(name = "Host_num", referencedColumnName = "Host_num", insertable = false, updatable = false)
     private HostInfo hostInfo;
+
+    // 추가된 칼럼
+    @Column(name = "Pr_discount_price") // 할인가
+    private Integer prDiscountPrice;
+
+    @Column(name = "Pr_display_status")
+    private String prDisplayStatus; // 변경된 필드 타입
+
+    @Column(name = "Pr_registered_date", columnDefinition = "TIMESTAMP") // 장소 등록일
+    private LocalDateTime prRegisteredDate;
+
+    @Column(name = "Pr_last_modified_date", columnDefinition = "TIMESTAMP") // 최종 수정일
+    private LocalDateTime prLastModifiedDate;
 
     public PrDetail(Integer prNum, String prAddress, String prWarnings, String prParking, Integer prMaxPerson, Integer prPrice, Integer prSpaceType) {
         this.prNum = prNum;
@@ -66,4 +85,6 @@ public class PrDetail {
         this.prPrice = prPrice;
         this.prSpaceType = prSpaceType;
     }
+
+
 }
