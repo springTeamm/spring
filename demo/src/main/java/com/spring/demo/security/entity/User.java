@@ -20,17 +20,20 @@ public class User {
     @Column(name = "User_id")
     private String userId; // 사용자 ID (로그인 시 사용)
 
-    @Column(name = "User_password")
+    @Column(name = "User_pwd")
     private String userPassword; // 사용자 비밀번호
 
-    @Column(name = "Comfirm_userpassword")
-    private String confirmUserPassword;
+    @Transient // 비밀번호 확인 필드는 DB에 저장되지 않도록 처리
+    private String confirmUserPassword; // 확인용 비밀번호
 
     @Column(name = "User_email")
     private String userEmail; // 사용자 이메일
 
     @Column(name = "User_name")
     private String userName; // 사용자 이름
+
+    @Column(name = "User_nickName")
+    private String userNickName; // 사용자 닉네임
 
 
 
@@ -45,14 +48,14 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Hosts hosts; // 사용자는 호스트와 1:1 관계 (호스트가 있으면 관련된 정보도 함께 관리)
 
-    public User(Integer userNum, String userName, String userId, String userEmail, String userPhone, String userPassword, String confirmUserPassword) {
+    public User(Integer userNum, String userName, String userId, String userEmail, String userPhone, String userPassword) {
         this.userNum = userNum;
         this.userName = userName;
         this.userId = userId;
         this.userEmail = userEmail;
         this.userPhone = userPhone;
         this.userPassword = userPassword;
-        this.confirmUserPassword = confirmUserPassword;
+
     }
 
     // isEmpty() 메소드 구현
