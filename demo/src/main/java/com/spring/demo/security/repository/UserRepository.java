@@ -12,6 +12,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     // 사용자 ID로 사용자 찾기
     User findByUserId(String userId);
 
+    User findByUserEmail(String email);
+
     // 사용자 ID 중복 확인
     boolean existsByUserId(String userId);
 

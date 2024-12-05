@@ -29,6 +29,8 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login") // 로그인 페이지 경로
                         .loginProcessingUrl("/login-process") // 로그인 처리 URL
+                        .usernameParameter("email")
+                        .passwordParameter("password")
                         .defaultSuccessUrl("/home", true) // 로그인 성공 후 이동 경로
                         .failureUrl("/login?error=true") // 로그인 실패 시 이동 경로
                 )
