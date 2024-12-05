@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<div class="login-container">
+    <form th:action="@{/login-process}" method="post">
+        <h2>로그인</h2>
+
+        <div>
+            <span th:if="${param.signup == 'success'}">회원가입이 성공적으로 완료되었습니다! 로그인 해주세요.</span>
+        </div>
+
+        <div th:if="${param.error}" class="error-message">
+            이메일 또는 비밀번호가 잘못되었습니다.
+        </div>
+        <input type="text" name="email" placeholder="이메일" required>
+        <input type="password" name="password" placeholder="비밀번호" required>
+        <button type="submit">로그인</button>
+        <div class="signup-links">
+            <a href="/signup/user">일반 회원가입</a>
+            <a href="/signup/host">호스트 회원가입</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
