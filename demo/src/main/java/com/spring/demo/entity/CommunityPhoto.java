@@ -1,5 +1,6 @@
 package com.spring.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,33 +9,33 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
 public class CommunityPhoto {
+
     @Id
-    @GeneratedValue
-    @Column(name = "C_jpg_num") //커뮤니티 사진 번호
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "C_jpg_num")
     private Integer cJpgNum;
 
-    @Column(name = "C_num") //커뮤니티 번호
-    private Integer cNum;
-
-    @Column(name = "C_jpg_origin_name") //커뮤니티 사진 본명
+    @Column(name = "C_jpg_origin_name", nullable = false)
     private String cJpgOriginName;
 
-    @Column(name = "C_jpg_path") //사진 경로명
+    @Column(name = "C_jpg_path", nullable = false)
     private String cJpgPath;
 
-    @Column(name = "C_jpg_name") //사진 고유 이름
+    @Column(name = "C_jpg_name", nullable = false)
     private String cJpgName;
 
-    public CommunityPhoto(Integer cJpgNum, Integer cNum, String cJpgOriginName, String cJpgPath, String cJpgName) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "C_num", nullable = false)
+    @JsonIgnore
+    private Community community;
+
+    // 생성자 정의
+    public CommunityPhoto(Integer cJpgNum, String cJpgOriginName, String cJpgPath, String cJpgName, Community community) {
         this.cJpgNum = cJpgNum;
-        this.cNum = cNum;
         this.cJpgOriginName = cJpgOriginName;
         this.cJpgPath = cJpgPath;
         this.cJpgName = cJpgName;
+        this.community = community;
     }
-
-
 }

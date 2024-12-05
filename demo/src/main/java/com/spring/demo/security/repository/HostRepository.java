@@ -1,17 +1,13 @@
 package com.spring.demo.security.repository;
 
-import com.spring.demo.security.entity.HostInfo;
-import com.spring.demo.security.entity.Hosts;
+import com.spring.demo.security.model.Hosts;
+import com.spring.demo.security.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository("securityHostRepository")
-public interface HostRepository extends JpaRepository<Hosts, Integer> {
-
-    // 특정 사용자의 호스트 정보 찾기
-    Hosts findByUser_UserNum(Integer userNum);
-
-
+public interface HostRepository extends JpaRepository<Hosts, Long> {
+    Optional<Hosts> findByUser(Users user);
 }
