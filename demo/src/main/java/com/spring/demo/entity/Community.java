@@ -47,8 +47,9 @@ public class Community {
     private String links;
 
 
-    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<CommunityPhoto> photos;
+    @OneToMany(mappedBy = "community", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommunityPhoto> photos; // 즉시 로딩
+
 
     public Community(Integer cNum, String title, String text, Integer userNum, LocalDateTime date, String location, String members, String links, Integer categoryNum, List<CommunityPhoto> photos) {
         this.cNum = cNum;

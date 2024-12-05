@@ -34,24 +34,22 @@ public class CommunityController {
         return new ResponseEntity<>(savedCommunity, HttpStatus.CREATED);
     }
 
-    // 특정 게시글의 이미지 가져오기
     @GetMapping("/{id}/images")
     public ResponseEntity<List<Map<String, String>>> getCommunityImages(@PathVariable Integer id) {
         List<CommunityPhoto> photos = communityService.findPhotosByCommunityId(id);
-
         if (photos == null || photos.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
         List<Map<String, String>> photoData = photos.stream()
                 .map(photo -> Map.of(
-                        "cJpgPath", "/uploads/" + photo.getCJpgName(), // 상대 경로로 반환
+                        "cJpgPath", "/uploads/" + photo.getCJpgName(),
                         "cJpgOriginName", photo.getCJpgOriginName()
                 ))
                 .collect(Collectors.toList());
-
         return ResponseEntity.ok(photoData);
     }
+
+
 
     // 특정 글 조회 (이미지 포함)
     @GetMapping("/{id}")
@@ -66,7 +64,7 @@ public class CommunityController {
         return communityService.getAllCommunities();
     }
 
-    // 특정 카테고리 글 보기
+    //카테고리 글 보기
     @GetMapping("/category/{categoryNum}")
     public List<Community> getCommunitiesByCategory(@PathVariable Integer categoryNum) {
         return communityService.getCommunitiesByCategory(categoryNum);
