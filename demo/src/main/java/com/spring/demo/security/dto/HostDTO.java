@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.beans.Transient;
 
 @Getter
 @Setter
