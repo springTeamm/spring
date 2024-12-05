@@ -24,8 +24,7 @@ public class PrBooking {
 
     @Column(name = "User_num") //유저 번호
     private Integer userNum;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date bookingDate;
 
     @Column(name = "Booking_total_person") // 예약 총인원
