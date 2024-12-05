@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.beans.Transient;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -51,5 +53,7 @@ public class HostDTO extends UserDTO {
 
     @NotBlank(message = "연습실 전화번호는 필수 입력 항목입니다.")
     private String practiceRoomPhoneNumber;
+
+    private String confirmUserPassword; // 비밀번호 확인 필드 (비즈니스 로직에서 사용)
 
 }

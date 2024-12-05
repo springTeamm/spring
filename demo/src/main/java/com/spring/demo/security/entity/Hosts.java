@@ -18,7 +18,7 @@ public class Hosts {
     private Integer hostNum; // 호스트 고유 번호 (PK)
 
     @OneToOne
-    @JoinColumn(name = "User_num")
+    @JoinColumn(name = "User_num", nullable = false)
     private User user; // 호스트는 User와 1:1 관계 (User 엔티티와 연결됨)
 
     @OneToOne(mappedBy = "host", cascade = CascadeType.ALL)

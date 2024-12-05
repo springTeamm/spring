@@ -17,7 +17,7 @@ public class User {
     @Column(name = "User_num")
     private Integer userNum; // 사용자 고유 번호 (PK)
 
-    @Column(name = "User_id")
+    @Column(name = "User_Id")
     private String userId; // 사용자 ID (로그인 시 사용)
 
     @Column(name = "User_pwd")
@@ -45,7 +45,7 @@ public class User {
     @Column(name = "User_rights")
     private String userRights; // 사용자 권한
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = true)
     private Hosts hosts; // 사용자는 호스트와 1:1 관계 (호스트가 있으면 관련된 정보도 함께 관리)
 
     public User(Integer userNum, String userName, String userId, String userEmail, String userPhone, String userPassword) {
