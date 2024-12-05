@@ -11,8 +11,11 @@ import java.util.Optional;
 public interface HostInfoRepository extends JpaRepository<HostInfo, Integer> {
 
     // 호스트 등록 번호로 호스트 정보 찾기
-    HostInfo findByHostRegistNum(String registNum);
+    Optional<HostInfo> findByHostRegistNum(String hostRegistNum);
 
     HostInfo findByHost_HostNum(Integer hostName);
+
+
+
 
 }

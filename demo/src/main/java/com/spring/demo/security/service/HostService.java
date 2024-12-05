@@ -22,33 +22,31 @@ public class HostService {
     private final HostInfoRepository hostInfoRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
-    private final UserService userService;
 
     // 호스트 회원가입 메서드
     @Transactional
     public User registerHost(HostDTO hostDTO) {
         // 비밀번호 일치 확인
-        if (!hostDTO.getUserPassword().equals(hostDTO.getConfirmUserPwd())) {
+        if (!hostDTO.getUserPassword().equals(hostDTO.getConfirmUserPassword())) {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
 
-        // 사용자 ID 중복 확인
+        // 사용자 ID와 이메일 중복 검증
         if (userRepository.existsByUserId(hostDTO.getUserId())) {
             throw new RuntimeException("이미 존재하는 아이디입니다.");
         }
-
-        // 이메일 중복 확인
         if (userRepository.existsByUserEmail(hostDTO.getUserEmail())) {
             throw new RuntimeException("이미 사용 중인 이메일입니다.");
         }
 
-        // 사업자 등록번호 중복 확인
-        if (hostInfoRepository.findByHostRegistNum(hostDTO.getBusinessRegistrationNumber()) != null) {
+        // 사업자 등록번호 중복 검증
+        if (hostInfoRepository.findByHostRegistNum(hostDTO.getBusinessRegistrationNumber()).isPresent()) {
             throw new RuntimeException("이미 등록된 사업자 번호입니다.");
         }
 
         // 비밀번호 암호화
         hostDTO.setUserPassword(passwordEncoder.encode(hostDTO.getUserPassword()));
+
 
         // 사용자 엔티티 생성
         User user = modelMapper.map(hostDTO, User.class);
@@ -66,6 +64,7 @@ public class HostService {
         hostInfo.setHostRegistDate(java.time.LocalDateTime.now());
         hostInfoRepository.save(hostInfo);
 
+        userRepository.flush(); // DB에 강제로 반영
         return savedUser;
     }
 

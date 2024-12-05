@@ -36,7 +36,7 @@ public class UserService {
         }
 
         // 비밀번호 일치 확인
-        if (!userDTO.getUserPassword().equals(userDTO.getConfirmUserPwd())) {
+        if (!userDTO.getUserPassword().equals(userDTO.getConfirmUserPassword())) {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
 

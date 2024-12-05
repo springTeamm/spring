@@ -25,7 +25,7 @@ public class UserDTO {
     private String userPassword;
 
     @NotBlank(message = "비밀번호 확인은 필수 입력 항목입니다.")
-    private String confirmUserPwd;
+    private String confirmUserPassword;
 
     @NotBlank(message = "이메일은 필수 입력 항목입니다.")
     @Email(message = "유효한 이메일 형식이 아닙니다.")
