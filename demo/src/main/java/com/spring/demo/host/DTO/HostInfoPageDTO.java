@@ -20,4 +20,6 @@ public class HostInfoPageDTO {
     private String userEmail;
     private String userPhone;
     private String representativeName;
+    private String hostTaxType;
+    private String userName;
 }

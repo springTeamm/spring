@@ -32,9 +32,10 @@ public class hostcontroller {
 
     @Autowired
     private SpaceSelectService hostspaceSelectService;
+
     @Autowired
     public hostcontroller(ReviewService reviewService, ReservationService reservationService, HostCancellService hostcancellService
-    , SalesService salesService, HostInfoPageService hostInfoPageService) {
+            , SalesService salesService, HostInfoPageService hostInfoPageService) {
         this.reviewService = reviewService;
 //        this.hostPageService = hostPageService;
         this.reservationService = reservationService;
@@ -49,6 +50,7 @@ public class hostcontroller {
         List<HostReviewDTO> reviews = reviewService.getAllReviews();
         return ResponseEntity.ok(reviews);
     }
+
     // 개별 답글 등록
     @PostMapping("/review/{reviewId}/reply")
     public ResponseEntity<String> addIndividualReply(
@@ -56,6 +58,11 @@ public class hostcontroller {
             @RequestParam String text) {
         reviewService.addReply(reviewId, text);
         return ResponseEntity.ok("개별 답글이 등록되었습니다.");
+    }
+
+    @GetMapping("/review/{reviewNum}/replies")
+    public List<ReviewReplyDTO> getReplies(@PathVariable Integer reviewNum) {
+        return reviewService.getRepliesByTopReviewNum(reviewNum);
     }
 
     // 공통 답글 등록
@@ -94,19 +101,30 @@ public class hostcontroller {
     }
 
 
-
-
-
     @GetMapping("/cancell/list")
     public ResponseEntity<List<ReservationCancellationDTO>> getCancellationList() {
         List<ReservationCancellationDTO> list = hostCancellService.getAllCancellations(); // 모든 취소 데이터 가져오기
         return ResponseEntity.ok(list);
     }
+
     @GetMapping("/Moneymanager")
     public ResponseEntity<List<SalesDTO>> getMonthlySales() {
         List<SalesDTO> sales = salesService.getMonthlySales();
         return ResponseEntity.ok(sales);
     }
+
+    // 매출 데이터 삭제
+    @PostMapping("/Moneymanager/delete")
+    public ResponseEntity<String> deleteRefund(@RequestBody Map<String, Integer> payload) {
+        Integer payNum = payload.get("payNum");
+        if (payNum == null) {
+            return ResponseEntity.badRequest().body("payNum 값이 누락되었습니다.");
+        }
+
+        salesService.deleteRefundByPayNum(payNum);
+        return ResponseEntity.ok("해당 payNum에 대한 환불이 삭제되었습니다.");
+    }
+
 
     @GetMapping("/spacelist")
     public List<HostPracticeRoomDTO> getPracticeRooms() {
@@ -128,4 +146,5 @@ public class hostcontroller {
         HostInfoPageDTO hostInfo = hostInfoPageService.getHostInfoByHostNum(hostNum);
         return ResponseEntity.ok(hostInfo);
     }
+
 }

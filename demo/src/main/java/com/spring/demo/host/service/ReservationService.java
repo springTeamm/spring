@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,10 +27,12 @@ public class ReservationService {
     private final HostRefund hostRefundRepository;
     private final HostAdjustmentRepository hostAdjustmentRepository;
     private final ReviewRepository reviewRepository;
+    private final HostPrDetailRepository hostPrDetailRepository;
+
     @Autowired
     public ReservationService(HostPaymentRepository paymentRepository, HostPrBookingRepository prBookingRepository,
-                              HostPracticeRoomRepository practiceRoomRepository, HostUserRepository userRepository, HostPrBookingRepository hostPrBookingRepository,HostRefund hostRefundRepository
-    , HostAdjustmentRepository hostAdjustmentRepository, ReviewRepository reviewRepository) {
+                              HostPracticeRoomRepository practiceRoomRepository, HostUserRepository userRepository, HostPrBookingRepository hostPrBookingRepository, HostRefund hostRefundRepository
+    , HostAdjustmentRepository hostAdjustmentRepository, ReviewRepository reviewRepository, HostPrDetailRepository hostPrDetailRepository) {
         this.paymentRepository = paymentRepository;
         this.prBookingRepository = prBookingRepository;
         this.practiceRoomRepository = practiceRoomRepository;
@@ -38,6 +41,7 @@ public class ReservationService {
         this.hostRefundRepository = hostRefundRepository;
         this.hostAdjustmentRepository = hostAdjustmentRepository;
         this.reviewRepository = reviewRepository;
+        this.hostPrDetailRepository = hostPrDetailRepository;
     }
 
     public List<ReservationDTO> getReservations() {
@@ -48,6 +52,8 @@ public class ReservationService {
                     .orElseThrow(() -> new RuntimeException("Practice room not found"));
             User user = userRepository.findById(booking.getUserNum())
                     .orElseThrow(() -> new RuntimeException("User not found"));
+            PrDetail prDetail = hostPrDetailRepository.findById(booking.getPrNum())
+                             .orElseThrow(() -> new RuntimeException("User not found"));
 
 
             return new ReservationDTO(
@@ -60,7 +66,9 @@ public class ReservationService {
                     payment.getPayDate(),
                     payment.getPayPrice(),
                     booking.getBookingTotalPerson(),
-                    room.getLocationName()
+                    room.getLocationName(),
+                    user.getUserPhone(),
+                    room.getPrUseable()
 
             );
         }).collect(Collectors.toList());
@@ -97,5 +105,6 @@ public class ReservationService {
         }
 
     }
+
 
 }

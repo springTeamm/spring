@@ -38,7 +38,8 @@ public class HostInfoPageService {
         dto.setUserId(user.getUserId());
         dto.setUserEmail(user.getUserEmail());
         dto.setUserPhone(user.getUserPhone());
-        dto.setRepresentativeName(user.getUserName());
+        dto.setRepresentativeName(user.getUserName()); dto.setHostTaxType(hostInfo.getHostTaxType());
+        dto.setUserName(user.getUserName());
         return dto;
     }
 }

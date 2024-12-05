@@ -6,6 +6,7 @@ import com.spring.demo.host.DTO.SalesDTO;
 import com.spring.demo.host.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -21,17 +22,20 @@ public class SalesService {
     private final HostPrBookingRepository prBookingRepository;
     private final HostPracticeRoomRepository practiceRoomRepository;
     private final HostPrCategoryRepository prCategoryRepository;
+    private final HostRefund hostRefund;
+
     @Autowired
     public SalesService(HostAdjustmentRepository adjustmentRepository,
                         HostPaymentRepository paymentRepository,
                         HostPrBookingRepository prBookingRepository,
                         HostPracticeRoomRepository practiceRoomRepository,
-                        HostPrCategoryRepository prCategoryRepository) {
+                        HostPrCategoryRepository prCategoryRepository, HostRefund hostRefund) {
         this.adjustmentRepository = adjustmentRepository;
         this.paymentRepository = paymentRepository;
         this.prBookingRepository = prBookingRepository;
         this.practiceRoomRepository = practiceRoomRepository;
         this.prCategoryRepository = prCategoryRepository;
+        this.hostRefund = hostRefund;
     }
 
     public List<SalesDTO> getMonthlySales() {
@@ -95,5 +99,13 @@ public class SalesService {
         });
 
         return salesDTOList;
+    }
+
+
+    @Transactional
+    public void deleteRefundByPayNum(Integer payNum) {
+        Refund refund = hostRefund.findByPayNum(payNum)
+                .orElseThrow(() -> new IllegalArgumentException("해당 payNum에 대한 환불 기록을 찾을 수 없습니다."));
+        hostRefund.delete(refund);
     }
 }

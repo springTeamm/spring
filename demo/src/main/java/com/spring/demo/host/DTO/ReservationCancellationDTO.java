@@ -25,4 +25,5 @@ public class ReservationCancellationDTO {
     private String prName;           // 방 이름
     private String locationName;     // 위치 이름
     private String userName;         // 대여자명
+
 }

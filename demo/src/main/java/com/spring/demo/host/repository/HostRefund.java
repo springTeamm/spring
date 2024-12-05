@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface HostRefund extends JpaRepository<Refund, Integer> {
 
     Optional<Refund> deleteByPayNum(Integer roomId);
+
+    Optional<Refund> findByPayNum(Integer payNum);
 }

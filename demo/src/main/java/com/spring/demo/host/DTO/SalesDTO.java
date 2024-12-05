@@ -14,5 +14,6 @@ public class SalesDTO {
     private String salesItem;      // 매출 항목
     private Integer salesAmount;   // 매출액 (원 단위)
     private Integer accumulatedSales; // 누적 매출액 (원 단위)
-    private String note;           // 비고
+    private String note;// 비고
+    private Integer payNum;
 }

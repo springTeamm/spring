@@ -55,7 +55,7 @@ public class SpaceSelectService {
 
             return new HostPracticeRoomDTO(
                     practiceRoom.getPrNum(),                           // Integer roomNumber
-                    practiceRoom.getPrName(),                          // String roomName
+                    practiceRoom.getLocationName(),                          // String roomName
                     prDetail.getPrPrice(),                             // Integer rentalPrice
                     prDetail.getPrPrice() - prDetail.getPrDiscountPrice(), // Integer discountPrice
                     prDetail.getPrDiscountPrice(),                     // Integer sellerDiscountPrice
