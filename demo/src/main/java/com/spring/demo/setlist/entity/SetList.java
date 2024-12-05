@@ -1,4 +1,4 @@
-package com.spring.demo.entity;
+package com.spring.demo.setlist.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,7 +22,7 @@ public class SetList {
     @Column(name = "List_title") //리스트 제목
     private String listTitle;
 
-    @Column(name = "Team_interval)num") //팀 음정 점수
+    @Column(name = "Team_interval_num") //팀 음정 점수
     private Integer teamInterval;
 
     @Column(name = "Team_beat_num") //팀 박자 점수
