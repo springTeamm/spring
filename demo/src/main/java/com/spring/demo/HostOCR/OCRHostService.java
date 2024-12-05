@@ -2,7 +2,7 @@ package com.spring.demo.HostOCR;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spring.demo.security.entity.HostInfo;
+import com.spring.demo.security.model.HostInfo;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class OCRHostService {
     public OCRHostService(OcrHostRepository ocrHostRepository) {
         this.ocrHostRepository = ocrHostRepository;
     }
-//
+    //
 //    public OcrResultDto processImage(String filePath) {
 //        try {
 //            String responseBody = callOcrApi(filePath);
@@ -42,15 +42,15 @@ public class OCRHostService {
 //            throw new RuntimeException("OCR 처리 중 오류 발생: " + e.getMessage(), e);
 //        }
 //    }
-public String processImage(String filePath) {
-    try {
-        String responseBody = callOcrApi(filePath);
+    public String processImage(String filePath) {
+        try {
+            String responseBody = callOcrApi(filePath);
 
-        return responseBody;
-    } catch (Exception e) {
-        throw new RuntimeException( e.getMessage(), e);//오류 낫으면
+            return responseBody;
+        } catch (Exception e) {
+            throw new RuntimeException( e.getMessage(), e);//오류 낫으면
+        }
     }
-}
 
     private String callOcrApi(String filePath) {
         try {

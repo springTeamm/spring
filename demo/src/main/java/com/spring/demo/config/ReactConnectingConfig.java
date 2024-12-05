@@ -15,6 +15,18 @@ public class ReactConnectingConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
                 .allowCredentials(true);
+
+        registry.addMapping("/predetails")
+                .allowedOrigins("http://localhost:4000") // React 서버 주소
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true); // 쿠키/자격 증명 허용
+
+        registry.addMapping("/posts")
+                .allowedOrigins("http://localhost:4000")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 
     @Override

@@ -87,7 +87,6 @@ public class CommunityService {
     public List<CommunityPhoto> findPhotosByCommunityId(Integer id) {
         return communityPhotoRepository.findByCommunity_cNum(id);
     }
-
     public Community getCommunityWithImages(Integer id) {
         Community community = communityRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID " + id + "에 해당하는 게시글이 없습니다."));
@@ -106,7 +105,6 @@ public class CommunityService {
         if (categoryNum < 1 || categoryNum > 3) {
             throw new IllegalArgumentException("유효하지 않은 카테고리 번호입니다: " + categoryNum);
         }
-
         return communityRepository.findByCategoryNum(categoryNum);
     }
 }
