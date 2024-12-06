@@ -55,15 +55,14 @@ public class HostCancellService {
         }
 
         // 호스트와 연관된 연습실 ID 가져오기
-        Hosts host = hosthostRepository.findByUser_UserNum(authenticatedUser.getUserNum())
+        Hosts host = hosthostRepository.findByUserNum(authenticatedUser.getUserNum())
                 .orElseThrow(() -> new RuntimeException("Host not found for user: " + userId));
 
-        List<Integer> hostRoomIds = hostpracticeRoomRepository.findAllByHostInfo_HostNum(host.getHostNum())
+        List<Integer> hostRoomIds = hostpracticeRoomRepository.findByHostInfoNum(host.getHostNum())
                 .stream()
-                .map(PracticeRoom::getPrNum)
+                .map(PracticeRoom::getPrNum) // 연습실 ID만 추출
                 .collect(Collectors.toList());
 
-        // 연습실 ID를 사용하여 관련 데이터 필터링
         List<Object[]> rawResults = hostpaymentRepository.findAllWithDetails().stream()
                 .filter(result -> hostRoomIds.contains((Integer) result[7])) // result[7]: prNum
                 .collect(Collectors.toList());

@@ -1,5 +1,6 @@
 package com.spring.demo.host.service;
 
+import com.spring.demo.entity.Hosts;
 import com.spring.demo.entity.PrDetail;
 import com.spring.demo.entity.PracticeRoom;
 import com.spring.demo.entity.User;
@@ -58,41 +59,37 @@ public class SpaceSelectService {
 
     @Autowired
     private HosthostRepository hosthostRepository;
-
     public List<HostPracticeRoomDTO> getPracticeRoomsForAuthenticatedUser() {
-        // 현재 인증된 사용자의 정보를 가져옴
+        // 현재 인증된 사용자 정보를 가져옴
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new RuntimeException("사용자가 인증되지 않았습니다.");
         }
 
-        // Spring Security의 UserDetails에서 사용자 ID를 가져옴
+        // 사용자 ID를 가져옴
         Object principal = authentication.getPrincipal();
-        String userId;
-        if (principal instanceof UserDetails) {
-            userId = ((UserDetails) principal).getUsername();
-        } else {
-            userId = principal.toString();
-        }
+        String userId = (principal instanceof UserDetails) ?
+                ((UserDetails) principal).getUsername() : principal.toString();
 
         // 사용자 ID로 User 엔티티 조회
         User authenticatedUser = hostUserRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
 
         // 사용자가 호스트인지 확인
-        boolean isHost = authenticatedUser.getUserRights().equals("HOST");
-        if (!isHost) {
+        if (!"HOST".equals(authenticatedUser.getUserRights())) {
             throw new RuntimeException("권한이 없습니다.");
         }
 
-        // 호스트와 연관된 연습실만 조회
-        List<PracticeRoom> practiceRooms = hostpracticeRoomRepository.findAllByHostInfo_HostNum(
-                hosthostRepository.findByUser_UserNum(authenticatedUser.getUserNum())
-                        .orElseThrow(() -> new RuntimeException("Host not found for user: " + userId))
-                        .getHostNum()
-        );
+        // 호스트 엔티티를 조회
+        Hosts host = hosthostRepository.findByUserNum(authenticatedUser.getUserNum())
+                .orElseThrow(() -> new RuntimeException("Host not found for user: " + userId));
 
-        // DTO 생성 및 반환
+        // 호스트와 연관된 연습실 조회
+        List<PracticeRoom> practiceRooms = practiceRoomRepository.findAll().stream()
+                .filter(room -> room.getHostInfoNum().equals(host.getHostNum()))
+                .collect(Collectors.toList());
+
+        // DTO로 변환
         return practiceRooms.stream().map(practiceRoom -> {
             // PrDetail 조회
             PrDetail prDetail = hostprDetailRepository.findById(practiceRoom.getPrNum())
@@ -110,6 +107,7 @@ public class SpaceSelectService {
             );
         }).collect(Collectors.toList());
     }
+
 
     @Transactional
     public void deleteRooms(List<Integer> roomIds) {

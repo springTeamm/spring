@@ -102,7 +102,7 @@ public class hostcontroller {
 
     @GetMapping("/cancell/list")
     public ResponseEntity<List<ReservationCancellationDTO>> getCancellationList() {
-        List<ReservationCancellationDTO> list = hostCancellService.getAllCancellations(); // 모든 취소 데이터 가져오기
+        List<ReservationCancellationDTO> list = hostCancellService.getCancellationsForAuthenticatedHost(); // 모든 취소 데이터 가져오기
         return ResponseEntity.ok(list);
     }
 

@@ -8,7 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface HosthostRepository extends JpaRepository<Hosts,Integer> {
-    Optional<Hosts> findByHostInfoNum(Integer hostInfoNum);
 
-    Optional<Hosts> findByUser_UserNum(Integer userNum);
+    Optional<Hosts> findByUserNum(Integer userNum);
 }
