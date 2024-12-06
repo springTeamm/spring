@@ -12,4 +12,6 @@ public interface ReviewRepository extends JpaRepository<PrReview, Integer> {
     Optional<PrReview> deleteByBookingNum(Integer bookingNum);
 
     List<PrReview> findByTopReviewNum(Integer topReviewNum);
+
+    List<PrReview> findAllByUserNum(Integer userNum);
 }

@@ -12,4 +12,6 @@ public interface HostUserRepository extends JpaRepository<User,Integer> {
 
     Optional<User> findByUserNum(Integer userNum);
 
- }
+
+    Optional<User> findByUserId(String userId);
+}

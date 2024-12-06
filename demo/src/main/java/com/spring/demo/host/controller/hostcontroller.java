@@ -1,7 +1,6 @@
 package com.spring.demo.host.controller;
 
 
-import com.spring.demo.category.service.PracticeRoomService;
 import com.spring.demo.entity.PrReview;
 import com.spring.demo.host.DTO.*;
 
@@ -47,7 +46,7 @@ public class hostcontroller {
     // 1. 리뷰 목록 가져오기
     @GetMapping("/review")
     public ResponseEntity<List<HostReviewDTO>> getAllReviews() {
-        List<HostReviewDTO> reviews = reviewService.getAllReviews();
+        List<HostReviewDTO> reviews = reviewService.getAllReviewsForAuthenticatedUser();
         return ResponseEntity.ok(reviews);
     }
 
@@ -85,7 +84,7 @@ public class hostcontroller {
 
     @GetMapping("/rooms/my-rooms/bookings")
     public List<ReservationDTO> getReservations() {
-        return reservationService.getReservations();
+        return reservationService.getReservationsForAuthenticatedUser();
     }
 
     @PostMapping("/rooms/my-rooms/bookings/cancel")
@@ -109,7 +108,7 @@ public class hostcontroller {
 
     @GetMapping("/Moneymanager")
     public ResponseEntity<List<SalesDTO>> getMonthlySales() {
-        List<SalesDTO> sales = salesService.getMonthlySales();
+        List<SalesDTO> sales = salesService.getMonthlySalesForAuthenticatedUser();
         return ResponseEntity.ok(sales);
     }
 
@@ -128,8 +127,9 @@ public class hostcontroller {
 
     @GetMapping("/spacelist")
     public List<HostPracticeRoomDTO> getPracticeRooms() {
-        return hostspaceSelectService.getPracticeRooms();
+        return hostspaceSelectService.getPracticeRoomsForAuthenticatedUser();
     }
+
     @PostMapping("/spacelist/deleteRooms")
     public ResponseEntity<String> deleteRooms(@RequestBody Map<String, List<Integer>> payload) {
         List<Integer> roomIds = payload.get("roomIds"); // "roomIds" 키로 배열 추출
@@ -143,7 +143,7 @@ public class hostcontroller {
         if (hostNum == null) {
             hostNum = 1; // 임시 값
         }
-        HostInfoPageDTO hostInfo = hostInfoPageService.getHostInfoByHostNum(hostNum);
+        HostInfoPageDTO hostInfo = hostInfoPageService.getHostInfoForAuthenticatedUser();
         return ResponseEntity.ok(hostInfo);
     }
 

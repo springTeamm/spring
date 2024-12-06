@@ -6,6 +6,9 @@ import com.spring.demo.host.DTO.HostReviewDTO;
 import com.spring.demo.host.DTO.ReviewReplyDTO;
 import com.spring.demo.host.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,22 +26,67 @@ public class ReviewService {
     private final HostUserRepository hostUserRepository;
     private final HostBookingRepository hostBookingRepository;
     private final HostinfohostRepository hostinfohostRepository;
+    private final HosthostRepository hosthostRepository;
 
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository, HostPracticeRoomRepository hostPracticeRoomRepository, HostUserRepository hostUserRepository, HostBookingRepository hostBookingRepository, HostinfohostRepository hostinfohostRepository) {
+    public ReviewService(ReviewRepository reviewRepository, HostPracticeRoomRepository hostPracticeRoomRepository, HostUserRepository hostUserRepository, HostBookingRepository hostBookingRepository, HostinfohostRepository hostinfohostRepository, HosthostRepository hosthostRepository) {
         this.reviewRepository = reviewRepository;
         this.hostPracticeRoomRepository = hostPracticeRoomRepository;
         this.hostUserRepository = hostUserRepository;
         this.hostBookingRepository = hostBookingRepository;
         this.hostinfohostRepository = hostinfohostRepository;
+        this.hosthostRepository = hosthostRepository;
     }
 
-    // 리뷰 목록 조회
-    public List<HostReviewDTO> getAllReviews() {
-        List<PrReview> reviews = reviewRepository.findAll();
-        List<HostReviewDTO> reviewDTOs = new ArrayList<>();
+    public List<HostReviewDTO> getAllReviewsForAuthenticatedUser() {
+        // 현재 인증된 사용자의 정보를 가져옴
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("사용자가 인증되지 않았습니다.");
+        }
 
-        for (PrReview review : reviews) {
+        // Spring Security의 UserDetails에서 사용자 ID를 가져옴
+        Object principal = authentication.getPrincipal();
+        String userId;
+        if (principal instanceof UserDetails) {
+            userId = ((UserDetails) principal).getUsername();
+        } else {
+            userId = principal.toString();
+        }
+
+        // 사용자 ID로 User 엔티티 조회
+        User authenticatedUser = hostUserRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+
+        // 해당 사용자가 호스트인지 확인
+        boolean isHost = authenticatedUser.getUserRights().equals("HOST");
+
+        // 인증된 사용자와 관련된 리뷰만 조회
+        List<PrReview> reviews;
+        if (isHost) {
+            // 호스트의 경우 자신이 소유한 연습실에 대한 리뷰 조회
+            reviews = reviewRepository.findAll().stream()
+                    .filter(review -> {
+                        PrBooking booking = hostBookingRepository.findByBookingNum(review.getBookingNum())
+                                .orElseThrow(() -> new RuntimeException("Booking not found"));
+                        PracticeRoom room = hostPracticeRoomRepository.findById(booking.getPrNum())
+                                .orElseThrow(() -> new RuntimeException("Practice Room not found"));
+                        HostInfo hostInfo = hostinfohostRepository.findByHostInfoNum(room.getHostInfoNum())
+                                .orElseThrow(() -> new RuntimeException("HostInfo not found"));
+
+                        // HostInfo의 hostNum으로 호스트 소유권 확인
+                        Hosts host = hosthostRepository.findById(hostInfo.getHostNum())
+                                .orElseThrow(() -> new RuntimeException("Host not found"));
+                        return host.getUserNum().equals(authenticatedUser.getUserNum());
+                    })
+                    .collect(Collectors.toList());
+        } else {
+            // 일반 사용자는 자신이 작성한 리뷰만 조회
+            reviews = reviewRepository.findAllByUserNum(authenticatedUser.getUserNum());
+        }
+
+        // DTO 생성 및 반환
+        return reviews.stream().map(review -> {
             // Booking을 통해 PracticeRoom 조회
             PrBooking booking = hostBookingRepository.findByBookingNum(review.getBookingNum())
                     .orElseThrow(() -> new RuntimeException("Booking not found"));
@@ -46,30 +94,22 @@ public class ReviewService {
             PracticeRoom room = hostPracticeRoomRepository.findById(booking.getPrNum())
                     .orElseThrow(() -> new RuntimeException("Practice Room not found"));
 
-            // User 조회
-            User user = hostUserRepository.findById(review.getUserNum())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
-
             // HostInfo에서 hostBisAddress 조회
-            HostInfo hostInfo = hostinfohostRepository.findByHostInfoNum(room.getHostInfoNum());
-            String hostAddress = hostInfo != null ? hostInfo.getHostBisAddress() : "주소 없음";
+            HostInfo hostInfo = hostinfohostRepository.findByHostInfoNum(room.getHostInfoNum())
+                    .orElseThrow(() -> new RuntimeException("HostInfo not found"));
+            String hostAddress = hostInfo.getHostBisAddress();
 
-            // DTO 생성
-            HostReviewDTO dto = new HostReviewDTO(
+            return new HostReviewDTO(
                     review.getReviewNum(),
                     hostAddress,    // 연습실 위치
                     room.getPrName(),       // 연습실 이름
-                    user.getUserName(),     // 유저 이름
+                    authenticatedUser.getUserName(),     // 유저 이름
                     review.getReviewStarScore(),
                     review.getTopReviewNum(),
                     review.getReviewText()
             );
-
-            reviewDTOs.add(dto);
-        }
-        return reviewDTOs;
+        }).collect(Collectors.toList());
     }
-
 
     // 개별 답글 추가
     // 리뷰 답글 추가

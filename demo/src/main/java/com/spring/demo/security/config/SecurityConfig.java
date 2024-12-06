@@ -21,7 +21,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/", "/login", "/signup/**", "/css/**").permitAll() // 공개 경로
                         .requestMatchers("/user/**").hasRole("USER") // 사용자 전용 경로
-                        .requestMatchers("/host/**").hasRole("HOST") // 호스트 전용 경로
+                        .requestMatchers("/api/hostpage/**").hasRole("HOST") // 호스트 전용 경로
                         .anyRequest().authenticated() // 나머지 경로는 인증 필요
                 )
 
@@ -31,7 +31,7 @@ public class SecurityConfig {
                         .loginProcessingUrl("/login-process") // 로그인 처리 URL
                         .usernameParameter("email")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/home", true) // 로그인 성공 후 이동 경로
+                        .defaultSuccessUrl("/api/hostpage", true) // 로그인 성공 후 이동 경로
                         .failureUrl("/login?error=true") // 로그인 실패 시 이동 경로
                 )
 

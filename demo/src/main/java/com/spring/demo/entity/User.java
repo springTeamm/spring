@@ -3,7 +3,7 @@ package com.spring.demo.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
+@Entity(name = "hostuser")
 @Table(name = "User")
 @Getter
 @Setter
@@ -31,7 +31,7 @@ public class User {
     @Column(name = "User_name")
     private String userName;
 
-    @Column(name = "User_nickname")
+    @Column(name = "User_nickName")
     private String userNickname;
 
     @Column(name = "User_phone")

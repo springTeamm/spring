@@ -5,7 +5,7 @@ import lombok.*;
 
 import java.util.Date;
 
-@Entity
+@Entity(name = "hostinfopage")
 @Table(name = "host_info")
 @Getter
 @Setter
@@ -73,4 +73,6 @@ public class HostInfo {
         this.hostModifyDate = hostModifyDate;
         this.hostDeleteDate = hostDeleteDate;
     }
+
+
 }

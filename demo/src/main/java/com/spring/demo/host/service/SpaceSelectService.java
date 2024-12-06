@@ -1,9 +1,14 @@
 package com.spring.demo.host.service;
 
 import com.spring.demo.entity.PrDetail;
+import com.spring.demo.entity.PracticeRoom;
+import com.spring.demo.entity.User;
 import com.spring.demo.host.DTO.HostPracticeRoomDTO;
 import com.spring.demo.host.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,25 +53,64 @@ public class SpaceSelectService {
     @Autowired
     private HostPracticeRoomRepository practiceRoomRepository;
 
-    public List<HostPracticeRoomDTO> getPracticeRooms() {
-        return hostpracticeRoomRepository.findAll().stream().map(practiceRoom -> {
+    @Autowired
+    private HostUserRepository hostUserRepository;
+
+    @Autowired
+    private HosthostRepository hosthostRepository;
+
+    public List<HostPracticeRoomDTO> getPracticeRoomsForAuthenticatedUser() {
+        // 현재 인증된 사용자의 정보를 가져옴
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("사용자가 인증되지 않았습니다.");
+        }
+
+        // Spring Security의 UserDetails에서 사용자 ID를 가져옴
+        Object principal = authentication.getPrincipal();
+        String userId;
+        if (principal instanceof UserDetails) {
+            userId = ((UserDetails) principal).getUsername();
+        } else {
+            userId = principal.toString();
+        }
+
+        // 사용자 ID로 User 엔티티 조회
+        User authenticatedUser = hostUserRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+
+        // 사용자가 호스트인지 확인
+        boolean isHost = authenticatedUser.getUserRights().equals("HOST");
+        if (!isHost) {
+            throw new RuntimeException("권한이 없습니다.");
+        }
+
+        // 호스트와 연관된 연습실만 조회
+        List<PracticeRoom> practiceRooms = hostpracticeRoomRepository.findAllByHostInfo_HostNum(
+                hosthostRepository.findByUser_UserNum(authenticatedUser.getUserNum())
+                        .orElseThrow(() -> new RuntimeException("Host not found for user: " + userId))
+                        .getHostNum()
+        );
+
+        // DTO 생성 및 반환
+        return practiceRooms.stream().map(practiceRoom -> {
+            // PrDetail 조회
             PrDetail prDetail = hostprDetailRepository.findById(practiceRoom.getPrNum())
                     .orElseThrow(() -> new RuntimeException("PrDetail not found for PracticeRoom ID: " + practiceRoom.getPrNum()));
 
             return new HostPracticeRoomDTO(
-                    practiceRoom.getPrNum(),                           // Integer roomNumber
-                    practiceRoom.getLocationName(),                          // String roomName
-                    prDetail.getPrPrice(),                             // Integer rentalPrice
+                    practiceRoom.getPrNum(),                             // Integer roomNumber
+                    practiceRoom.getLocationName(),                      // String roomName
+                    prDetail.getPrPrice(),                               // Integer rentalPrice
                     prDetail.getPrPrice() - prDetail.getPrDiscountPrice(), // Integer discountPrice
-                    prDetail.getPrDiscountPrice(),                     // Integer sellerDiscountPrice
-                    prDetail.getPrDisplayStatus(),// String displayStatus
-                    prDetail.getPrRegisteredDate(),                    // LocalDateTime registeredDate
-                    prDetail.getPrLastModifiedDate()                   // LocalDateTime lastModifiedDate
+                    prDetail.getPrDiscountPrice(),                       // Integer sellerDiscountPrice
+                    prDetail.getPrDisplayStatus(),                       // String displayStatus
+                    prDetail.getPrRegisteredDate(),                      // LocalDateTime registeredDate
+                    prDetail.getPrLastModifiedDate()                     // LocalDateTime lastModifiedDate
             );
         }).collect(Collectors.toList());
-
-
     }
+
     @Transactional
     public void deleteRooms(List<Integer> roomIds) {
         roomIds.forEach(roomId -> {

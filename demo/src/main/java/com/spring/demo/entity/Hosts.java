@@ -3,7 +3,7 @@ package com.spring.demo.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
+@Entity(name="hostpage")
 @Table(name = "hosts")
 @Getter
 @Setter
