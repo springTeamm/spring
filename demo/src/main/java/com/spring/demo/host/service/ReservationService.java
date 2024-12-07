@@ -133,4 +133,10 @@ public class ReservationService {
     }
 
 
+    @Transactional
+    public PrBooking addBooking(PrBooking bookingData) {
+        return prBookingRepository.save(bookingData);
+    }
+
+
 }

@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -141,5 +142,29 @@ public class SpaceSelectService {
             practiceRoomRepository.deleteById(roomId);
         });
     }
+    public void updateRoomByPrNum(Integer prNum, String roomName, String prUseable, String locationName, Integer rentalPrice, Integer discountPrice, String displayStatus, LocalDateTime lastModifiedDate) {
+        // practiceRoom과 prDetail 데이터 가져오기
+        PracticeRoom practiceRoom = practiceRoomRepository.findByPrNum(prNum)
+                .orElseThrow(() -> new RuntimeException("방 정보를 찾을 수 없습니다."));
+
+        PrDetail prDetail = prDetailRepository.findByPrNum(prNum)
+                .orElseThrow(() -> new RuntimeException("상세 정보를 찾을 수 없습니다."));
+
+        // 데이터 수정
+        practiceRoom.setPrName(roomName);
+        practiceRoom.setPrUseable(prUseable);
+        practiceRoom.setLocationName(locationName);
+
+        prDetail.setPrPrice(rentalPrice);
+        prDetail.setPrDiscountPrice(discountPrice);
+        prDetail.setPrDisplayStatus(displayStatus);
+        prDetail.setPrLastModifiedDate(lastModifiedDate);
+
+        // 저장
+        practiceRoomRepository.save(practiceRoom);
+        prDetailRepository.save(prDetail);
+    }
+
+
 
 }

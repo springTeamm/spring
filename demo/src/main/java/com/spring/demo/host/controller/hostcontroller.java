@@ -1,6 +1,7 @@
 package com.spring.demo.host.controller;
 
 
+import com.spring.demo.entity.PrBooking;
 import com.spring.demo.entity.PrReview;
 import com.spring.demo.host.DTO.*;
 
@@ -9,8 +10,10 @@ import com.spring.demo.host.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,10 +30,11 @@ public class hostcontroller {
 
     @Autowired
     private HostCancellService hostCancellService;
-//    private final HostPageService hostPageService;
 
     @Autowired
     private SpaceSelectService hostspaceSelectService;
+    @Autowired
+    private SpaceSelectService spaceSelectService;
 
     @Autowired
     public hostcontroller(ReviewService reviewService, ReservationService reservationService, HostCancellService hostcancellService
@@ -70,17 +74,6 @@ public class hostcontroller {
         reviewService.addCommonReplies(replies);
         return ResponseEntity.ok("공통 답글이 등록되었습니다.");
     }
-
-//    @GetMapping("hostinfo/{userNum}")
-//    public ResponseEntity<HostPageDTO> getHostPageData(@PathVariable Integer userNum) {
-//        return ResponseEntity.ok(hostPageService.getHostPageData(userNum));
-//    }
-//
-//    @PutMapping("hostinfo/{userNum}")
-//    public ResponseEntity<Void> updateHostPageData(@PathVariable Integer userNum, @RequestBody HostPageDTO hostPageDTO) {
-//        hostPageService.updateHostPageData(userNum, hostPageDTO);
-//        return ResponseEntity.ok().build();
-//    }
 
     @GetMapping("/rooms/my-rooms/bookings")
     public List<ReservationDTO> getReservations() {
@@ -137,14 +130,50 @@ public class hostcontroller {
         return ResponseEntity.ok("삭제 완료");
 
     }
+    @PostMapping("/updateRoom")
+    public ResponseEntity<String> updateRoom(
+            @RequestParam Integer prNum,
+            @RequestParam String roomName,
+            @RequestParam String prUseable,
+            @RequestParam String locationName,
+            @RequestParam Integer rentalPrice,
+            @RequestParam Integer discountPrice,
+            @RequestParam String displayStatus,
+            @RequestParam String lastModifiedDate) {
+        try {
+            // prNum을 기준으로 데이터 수정
+            LocalDateTime modifiedDate = LocalDateTime.parse(lastModifiedDate);
+            spaceSelectService.updateRoomByPrNum(prNum, roomName, prUseable, locationName, rentalPrice, discountPrice, displayStatus, modifiedDate);
+            return ResponseEntity.ok("방 정보가 성공적으로 수정되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("방 정보 수정 중 오류 발생: " + e.getMessage());
+        }
+    }
+
+
     @GetMapping("/hostinfo")
     public ResponseEntity<HostInfoPageDTO> getHostInfo(@RequestParam(required = false) Integer hostNum) {
         // hostNum이 없으면 기본값으로 1 사용
         if (hostNum == null) {
-            hostNum = 1; // 임시 값
+            hostNum = 1;
         }
         HostInfoPageDTO hostInfo = hostInfoPageService.getHostInfoForAuthenticatedUser();
         return ResponseEntity.ok(hostInfo);
     }
+
+    //예약 추가
+    @PostMapping("/users/${userNum}/rooms/${roomNum}/booking")
+    public ResponseEntity<PrBooking> addBooking(
+            @PathVariable Integer userNum,
+            @PathVariable Integer roomNum,
+            @RequestBody PrBooking bookingData
+    ) {
+        bookingData.setUserNum(userNum);
+        bookingData.setPrNum(roomNum);
+        PrBooking savedBooking = reservationService.addBooking(bookingData);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedBooking);
+    }
+
+
 
 }
