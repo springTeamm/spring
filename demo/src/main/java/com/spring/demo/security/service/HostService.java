@@ -108,4 +108,17 @@ public class HostService {
 
         return modelMapper.map(hostInfo, HostDTO.class);
     }
+
+    // 메서드추가
+    public boolean validateHost(String userId, String password) {
+        // HostRepository를 통해 사용자 ID에 연결된 호스트 검색
+        Hosts host = hostRepository.findByUser_UserId(userId);
+
+        if (host == null || host.getUser() == null) {
+            return false; // 해당 호스트가 존재하지 않음
+        }
+
+        // 비밀번호 검증
+        return passwordEncoder.matches(password, host.getUser().getUserPassword());
+    }
 }
