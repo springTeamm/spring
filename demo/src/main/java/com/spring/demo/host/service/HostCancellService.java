@@ -1,10 +1,10 @@
 package com.spring.demo.host.service;
 
-import com.spring.demo.entity.*;
+import com.spring.demo.entity.Hosts;
+import com.spring.demo.entity.PracticeRoom;
+import com.spring.demo.entity.User;
 import com.spring.demo.host.DTO.ReservationCancellationDTO;
-import com.spring.demo.host.DTO.RoomDetailsDTO;
 import com.spring.demo.host.repository.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,7 +12,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service

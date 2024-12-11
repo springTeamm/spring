@@ -2,19 +2,14 @@ package com.spring.demo.host.controller;
 
 
 import com.spring.demo.entity.PrBooking;
-import com.spring.demo.entity.PrReview;
 import com.spring.demo.host.DTO.*;
-
 import com.spring.demo.host.service.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -162,17 +157,19 @@ public class hostcontroller {
     }
 
     //예약 추가
-    @PostMapping("/users/${userNum}/rooms/${roomNum}/booking")
+    @PostMapping("/users/{userNum}/rooms/{prNum}/booking")
     public ResponseEntity<PrBooking> addBooking(
-            @PathVariable Integer userNum,
-            @PathVariable Integer roomNum,
+            @PathVariable Integer userNum,  // URL 경로에서 값 받기
+            @PathVariable Integer prNum,
             @RequestBody PrBooking bookingData
     ) {
         bookingData.setUserNum(userNum);
-        bookingData.setPrNum(roomNum);
+        bookingData.setPrNum(prNum);
+
         PrBooking savedBooking = reservationService.addBooking(bookingData);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedBooking);
     }
+
 
 
 

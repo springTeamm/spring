@@ -1,7 +1,6 @@
 package com.spring.demo.host.DTO;
 
 import com.spring.demo.entity.*;
-
 import lombok.Data;
 
 import java.util.List;

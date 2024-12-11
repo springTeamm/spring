@@ -6,6 +6,7 @@ package com.spring.demo.host.service;
 
 import com.spring.demo.entity.*;
 import com.spring.demo.host.DTO.ReservationDTO;
+import com.spring.demo.host.entity.PrDetail;
 import com.spring.demo.host.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -16,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
