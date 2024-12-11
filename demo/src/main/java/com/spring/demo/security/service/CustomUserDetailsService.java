@@ -3,6 +3,7 @@ package com.spring.demo.security.service;
 import com.spring.demo.security.entity.User;
 import com.spring.demo.security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
@@ -19,12 +20,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("userId {}", username);
         // 사용자 ID로 사용자 조회
-        User user = userRepository.findByUserEmail(email);
+        User user = userRepository.findByUserId(username);
+        log.info("### {}", user);
 
         if (user == null) {
-            throw new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + email);
+            throw new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + username);
         }
 
         // 사용자 권한 설정 (예: 호스트인지 일반 사용자인지)
