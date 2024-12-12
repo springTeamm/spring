@@ -1,16 +1,15 @@
-package com.spring.demo.entity;
+package com.spring.demo.host.entity;
 //ADD COLUMN Pr_description TEXT,
 //ADD COLUMN Pr_hashtags VARCHAR(255); 추가
-import com.spring.demo.entity.HostInfo;
 
 import com.spring.demo.entity.HostInfo;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalTime;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
-@Entity
+@Entity(name = "pr_host_detail")
 @Table(name = "pr_detail")
 @Getter
 @Setter
@@ -59,7 +58,9 @@ public class PrDetail {
     @Column(name = "Location_name") // 장소명
     private String locationName;
 
-
+    @ManyToOne
+    @JoinColumn(name = "Host_num", referencedColumnName = "Host_num", insertable = false, updatable = false)
+    private HostInfo hostInfo;
 
     // 추가된 칼럼
     @Column(name = "Pr_discount_price") // 할인가

@@ -14,7 +14,7 @@ import java.util.Date;
 @EqualsAndHashCode
 public class PrReview {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Review_num") //리뷰번호
     private Integer reviewNum;
 

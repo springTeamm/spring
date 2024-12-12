@@ -30,11 +30,17 @@ public class Payment {
     @Column(name = "Pay_status") //결제 상태
     private String payStatus;
 
-    public Payment(Integer payNum, Integer bookingNum, Integer payPrice, Date payDate, String payStatus) {
+    @Column(name = "Booking_cancel")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date bookingCancel;
+    public Payment(Integer payNum, Integer bookingNum, Integer payPrice, Date payDate, String payStatus, Date bookingCancel) {
         this.payNum = payNum;
         this.bookingNum = bookingNum;
         this.payPrice = payPrice;
         this.payDate = payDate;
         this.payStatus = payStatus;
+        this.bookingCancel = bookingCancel;
     }
+
+
 }
