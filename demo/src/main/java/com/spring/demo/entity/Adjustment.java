@@ -14,7 +14,7 @@ import java.util.Date;
 @EqualsAndHashCode
 public class Adjustment {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Ad_num") //정산번호
     private Integer adNum;
 

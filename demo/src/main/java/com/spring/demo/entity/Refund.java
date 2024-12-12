@@ -14,7 +14,7 @@ import java.util.Date;
 @EqualsAndHashCode
 public class Refund {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Re_num") //환불번호
     private Integer reNum;
 
