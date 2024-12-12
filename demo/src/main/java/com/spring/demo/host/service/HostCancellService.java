@@ -1,8 +1,6 @@
 package com.spring.demo.host.service;
 
-import com.spring.demo.entity.Hosts;
 import com.spring.demo.entity.PracticeRoom;
-import com.spring.demo.entity.User;
 import com.spring.demo.host.DTO.ReservationCancellationDTO;
 import com.spring.demo.host.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
