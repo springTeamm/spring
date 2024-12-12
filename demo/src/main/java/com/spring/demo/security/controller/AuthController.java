@@ -1,6 +1,7 @@
 package com.spring.demo.security.controller;
 
 import com.spring.demo.security.dto.HostDTO;
+import com.spring.demo.security.dto.HostSignupDTO;
 import com.spring.demo.security.dto.UserDTO;
 import com.spring.demo.security.service.HostService;
 import com.spring.demo.security.service.UserService;
@@ -40,7 +41,7 @@ public class AuthController {
 
     // 호스트 회원가입 처리
     @PostMapping("/signup/host")
-    public ResponseEntity<HostDTO> hostSignup(@Valid @RequestBody HostDTO hostDTO, BindingResult bindingResult) {
+    public ResponseEntity<HostDTO> hostSignup(@Valid @RequestBody HostSignupDTO hostDTO, BindingResult bindingResult) {
         // 유효성 검사 실패 시
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
