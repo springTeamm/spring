@@ -1,6 +1,8 @@
 package com.spring.demo.host.service;
 
 
+import com.spring.demo.entity.HostInfo;
+import com.spring.demo.entity.User;
 import com.spring.demo.host.DTO.HostInfoPageDTO;
 import com.spring.demo.host.repository.HostUserRepository;
 import com.spring.demo.host.repository.HostinfohostRepository;

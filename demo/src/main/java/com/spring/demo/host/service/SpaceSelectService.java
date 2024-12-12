@@ -1,6 +1,8 @@
 package com.spring.demo.host.service;
 
+import com.spring.demo.entity.Hosts;
 import com.spring.demo.entity.PracticeRoom;
+import com.spring.demo.entity.User;
 import com.spring.demo.host.DTO.HostPracticeRoomDTO;
 import com.spring.demo.host.entity.PrDetail;
 import com.spring.demo.host.repository.*;
