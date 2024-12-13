@@ -17,5 +17,6 @@ public interface HostPracticeRoomRepository extends JpaRepository<PracticeRoom, 
     @Query("SELECT pr FROM PracticeRoom pr WHERE pr.hostInfoNum = :hostInfoNum")
     List<PracticeRoom> findByHostInfoNum(@Param("hostInfoNum") Integer hostInfoNum);
 
+
 }
 

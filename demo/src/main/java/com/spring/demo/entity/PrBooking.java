@@ -15,7 +15,7 @@ import java.util.Date;
 @EqualsAndHashCode
 public class PrBooking {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Booking_num") //예약번호
     private Integer bookingNum;
 
@@ -26,7 +26,10 @@ public class PrBooking {
     private Integer userNum;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date bookingDate;
-
+    @PrePersist
+    protected void onCreate() {
+        this.bookingDate = new Date();
+    }
     @Column(name = "Booking_total_person") // 예약 총인원
     private Integer bookingTotalPerson;
 

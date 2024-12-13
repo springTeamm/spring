@@ -14,7 +14,7 @@ import java.util.Date;
 @EqualsAndHashCode
 public class Payment {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Pay_num") //결제 번호
     private Integer payNum;
 

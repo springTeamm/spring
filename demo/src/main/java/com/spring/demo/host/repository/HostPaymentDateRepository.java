@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface HostPaymentDateRepository extends JpaRepository<Payment, Data> {
-    Optional<Payment> findByPayDate(Date paydate);
+
 
 }

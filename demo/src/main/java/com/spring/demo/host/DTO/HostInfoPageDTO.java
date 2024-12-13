@@ -16,10 +16,11 @@ public class HostInfoPageDTO {
     private String hostBisType;
     private String hostCompanyName;
     private String hostCorpName;
+    private String hostTaxType;
     private String userId;
     private String userEmail;
     private String userPhone;
     private String representativeName;
-    private String hostTaxType;
     private String userName;
+    private String locationName; // 장소 이름 추가
 }

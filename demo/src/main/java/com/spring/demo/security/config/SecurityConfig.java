@@ -38,7 +38,9 @@ public class SecurityConfig {
                         .requestMatchers("/user/**").hasRole("USER") // 사용자 전용 경로
 //                        .requestMatchers("/host/**").hasRole("HOST") // 호스트 전용 경로
                         .requestMatchers("/host/**").permitAll() // 호스트 경로 전체 허용
-                        .anyRequest().authenticated() // 나머지 경로는 인증 필요
+                                .requestMatchers("/api/hostpage/**").permitAll()
+                                .requestMatchers("/api/ocr/**").permitAll()
+                                .anyRequest().authenticated() // 나머지 경로는 인증 필요
                 )
                 // 로그인 설정
                 .formLogin(form -> form
